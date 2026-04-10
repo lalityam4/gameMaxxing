@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameMaxxing — Color Directions</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&family=Fraunces:wght@700;900&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── SWITCHER UI ── */
+    body { background: #111; font-family: 'DM Sans', sans-serif; }
+
+    .switcher {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: #000;
+      border-bottom: 1px solid #222;
+    }
+    .switcher-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #555;
+      margin-right: 4px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .theme-btn {
+      border: none;
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      opacity: 0.5;
+    }
+    .theme-btn.active { opacity: 1; }
+    #btn-retro   { background: #f5ede0; color: #2a1a0e; font-family: 'DM Serif Display', serif; }
+    #btn-bold    { background: #f0e614; color: #0a0a0a; font-family: 'Syne', sans-serif; }
+    #btn-earthy  { background: #d4cbb8; color: #2d2a24; font-family: 'Space Grotesk', sans-serif; }
+    #btn-chalk   { background: #1e2535; color: #e8e2d4; font-family: 'Fraunces', serif; }
+
+    .preview-wrap {
+      margin-top: 49px;
+      display: none;
+    }
+    .preview-wrap.active { display: block; }
+
+
+    /* ════════════════════════════════════════
+       THEME 1 — WARM RETRO CATALOG
+       Cream base · ink text · rust accent
+       DM Serif Display + DM Sans
+    ════════════════════════════════════════ */
+    #theme-retro {
+      background: #faf4ea;
+      color: #1c1208;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+    #theme-retro .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 36px;
+      border-bottom: 2px solid #1c1208;
+    }
+    #theme-retro .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      color: #1c1208;
+    }
+    #theme-retro .logo span { color: #c04b1a; }
+    #theme-retro .top-nav {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    #theme-retro .top-nav a {
+      text-decoration: none;
+      color: #6b5040;
+      border-bottom: 1px dashed #c04b1a;
+      padding-bottom: 1px;
+    }
+    #theme-retro .top-nav a.active { color: #c04b1a; border-bottom: 2px solid #c04b1a; }
+
+    #theme-retro .hero {
+      padding: 60px 36px 40px;
+      max-width: 600px;
+    }
+    #theme-retro .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c04b1a;
+      margin-bottom: 14px;
+    }
+    #theme-retro .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3.4rem;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: #1c1208;
+    }
+    #theme-retro .hero h1 em {
+      font-style: italic;
+      color: #c04b1a;
+    }
+    #theme-retro .hero p {
+      font-size: 1rem;
+      color: #6b5040;
+      line-height: 1.6;
+      max-width: 420px;
+      margin-bottom: 28px;
+    }
+    #theme-retro .search {
+      display: flex;
+      align-items: center;
+      border: 2px solid #1c1208;
+      border-radius: 2px;
+      max-width: 380px;
+    }
+    #theme-retro .search input {
+      flex: 1;
+      padding: 10px 14px;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: #1c1208;
+    }
+    #theme-retro .search input::placeholder { color: #b89c84; }
+    #theme-retro .search button {
+      background: #1c1208;
+      color: #faf4ea;
+      border: none;
+      padding: 10px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    #theme-retro .section-rule {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 32px 36px 20px;
+    }
+    #theme-retro .section-rule span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #6b5040;
+      white-space: nowrap;
+    }
+    #theme-retro .section-rule hr { flex: 1; border: none; border-top: 1px solid #d4b99a; }
+
+    #theme-retro .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0;
+      padding: 0 36px;
+      border: 2px solid #1c1208;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    #theme-retro .cat-item {
+      padding: 24px 20px;
+      border-right: 1px solid #d4b99a;
+      border-bottom: 1px solid #d4b99a;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #theme-retro .cat-item:hover { background: #f0e4d0; }
+    #theme-retro .cat-item .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: #c04b1a;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    #theme-retro .cat-item .name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    #theme-retro .cat-item .label {
+      font-size: 0.75rem;
+      color: #6b5040;
+    }
+
+    #theme-retro .game-row {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 1px solid #d4b99a;
+      padding: 18px 36px;
+      gap: 20px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #theme-retro .game-row:hover { background: #f0e4d0; }
+    #theme-retro .game-row .idx {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: #c04b1a;
+      min-width: 28px;
+    }
+    #theme-retro .game-row h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    #theme-retro .game-row p { font-size: 0.82rem; color: #6b5040; line-height: 1.5; }
+    #theme-retro .game-row .meta {
+      margin-left: auto;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+    #theme-retro .game-row .meta span {
+      font-size: 0.72rem;
+      color: #6b5040;
+      background: #ecdec9;
+      padding: 2px 8px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+
+    /* ════════════════════════════════════════
+       THEME 2 — BOLD FLAT
+       Near-black · electric yellow · stark
+       Syne (headings) + Space Grotesk
+    ════════════════════════════════════════ */
+    #theme-bold {
+      background: #0a0a0a;
+      color: #f5f5f5;
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+    }
+    #theme-bold .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 36px;
+      border-bottom: 1px solid #222;
+    }
+    #theme-bold .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    #theme-bold .logo span { color: #f0e614; }
+    #theme-bold .top-nav {
+      display: flex;
+      gap: 4px;
+    }
+    #theme-bold .top-nav a {
+      text-decoration: none;
+      color: #666;
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+    #theme-bold .top-nav a.active {
+      background: #f0e614;
+      color: #0a0a0a;
+      font-weight: 700;
+    }
+
+    #theme-bold .hero {
+      padding: 56px 36px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 32px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+    #theme-bold .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -3px;
+      text-transform: uppercase;
+    }
+    #theme-bold .hero h1 em {
+      font-style: normal;
+      color: #f0e614;
+      -webkit-text-stroke: 0px;
+    }
+    #theme-bold .hero h1 .outline {
+      -webkit-text-stroke: 1px #555;
+      color: transparent;
+    }
+    #theme-bold .hero-right {
+      text-align: right;
+    }
+    #theme-bold .hero-right p {
+      font-size: 0.85rem;
+      color: #666;
+      max-width: 220px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    #theme-bold .hero-right .count-block {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: #f0e614;
+      line-height: 1;
+    }
+    #theme-bold .hero-right .count-label {
+      font-size: 0.7rem;
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    #theme-bold .cat-strip {
+      display: flex;
+      border-bottom: 1px solid #1e1e1e;
+      overflow-x: auto;
+    }
+    #theme-bold .cat-strip::-webkit-scrollbar { display: none; }
+    #theme-bold .cat-strip-item {
+      flex-shrink: 0;
+      padding: 20px 28px;
+      border-right: 1px solid #1e1e1e;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    #theme-bold .cat-strip-item:hover, #theme-bold .cat-strip-item.active {
+      background: #f0e614;
+      color: #0a0a0a;
+    }
+    #theme-bold .cat-strip-item .cat-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    #theme-bold .cat-strip-item .cat-count {
+      font-size: 0.7rem;
+      opacity: 0.5;
+      margin-top: 2px;
+    }
+
+    #theme-bold .games-block {
+      padding: 32px 36px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background: #1e1e1e;
+      border-top: 1px solid #1e1e1e;
+    }
+    #theme-bold .game-tile {
+      background: #0a0a0a;
+      padding: 24px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #theme-bold .game-tile:hover { background: #141414; }
+    #theme-bold .game-tile .tile-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #f0e614;
+      margin-bottom: 10px;
+    }
+    #theme-bold .game-tile h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    #theme-bold .game-tile p {
+      font-size: 0.8rem;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    #theme-bold .game-tile .tile-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #theme-bold .game-tile .players {
+      font-size: 0.75rem;
+      color: #444;
+    }
+    #theme-bold .game-tile .arrow {
+      width: 28px; height: 28px;
+      background: #1e1e1e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+
+    /* ════════════════════════════════════════
+       THEME 3 — EARTHY / HANDMADE
+       Warm off-white · sage · clay · ink
+       Space Grotesk + serif mix
+    ════════════════════════════════════════ */
+    #theme-earthy {
+      background: #f2ede4;
+      color: #2d2a24;
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+    }
+    #theme-earthy .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 36px;
+      background: #e8e0d2;
+      border-bottom: 1px solid #ccc4b0;
+    }
+    #theme-earthy .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    #theme-earthy .logo span {
+      display: inline-block;
+      background: #4a7c59;
+      color: #f2ede4;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 4px;
+    }
+    #theme-earthy .top-nav {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+    }
+    #theme-earthy .top-nav a {
+      text-decoration: none;
+      color: #7a6e60;
+      font-weight: 500;
+    }
+    #theme-earthy .top-nav a.active { color: #4a7c59; border-bottom: 2px solid #4a7c59; }
+
+    #theme-earthy .hero {
+      padding: 52px 36px 36px;
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+    #theme-earthy .hero-left { flex: 1; }
+    #theme-earthy .hero-left h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -1px;
+    }
+    #theme-earthy .hero-left h1 .highlight {
+      background: #4a7c59;
+      color: #f2ede4;
+      padding: 0 6px;
+      border-radius: 4px;
+    }
+    #theme-earthy .hero-left p {
+      color: #7a6e60;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 24px;
+    }
+    #theme-earthy .hero-right {
+      flex-shrink: 0;
+      width: 200px;
+      background: #4a7c59;
+      border-radius: 8px;
+      padding: 24px;
+      color: #f2ede4;
+    }
+    #theme-earthy .hero-right .big-num {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    #theme-earthy .hero-right .small-label {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 4px;
+      margin-bottom: 20px;
+    }
+    #theme-earthy .hero-right .cat-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    #theme-earthy .hero-right .cat-pill {
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #theme-earthy .cat-row {
+      display: flex;
+      gap: 12px;
+      padding: 0 36px 36px;
+      overflow-x: auto;
+    }
+    #theme-earthy .cat-row::-webkit-scrollbar { display: none; }
+    #theme-earthy .cat-chip {
+      flex-shrink: 0;
+      padding: 12px 20px;
+      border: 1.5px solid #ccc4b0;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: #f2ede4;
+    }
+    #theme-earthy .cat-chip:hover, #theme-earthy .cat-chip.active {
+      background: #4a7c59;
+      border-color: #4a7c59;
+      color: #f2ede4;
+    }
+
+    #theme-earthy .game-masonry {
+      padding: 0 36px 48px;
+      columns: 3;
+      column-gap: 14px;
+    }
+    @media (max-width: 800px) { #theme-earthy .game-masonry { columns: 2; } }
+    @media (max-width: 500px) { #theme-earthy .game-masonry { columns: 1; } }
+    #theme-earthy .game-card {
+      break-inside: avoid;
+      background: #fff;
+      border: 1px solid #ddd6c7;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    #theme-earthy .game-card:hover { border-color: #4a7c59; }
+    #theme-earthy .game-card .card-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #4a7c59;
+      margin-bottom: 8px;
+    }
+    #theme-earthy .game-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    #theme-earthy .game-card p {
+      font-size: 0.8rem;
+      color: #7a6e60;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    #theme-earthy .game-card .card-footer {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    #theme-earthy .game-card .tag {
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      background: #f2ede4;
+      border: 1px solid #ddd6c7;
+      border-radius: 4px;
+      color: #7a6e60;
+    }
+
+
+    /* ════════════════════════════════════════
+       THEME 4 — CHALK / NIGHTBOARD
+       Deep navy · warm cream text · chalk feel
+       Fraunces + DM Sans
+    ════════════════════════════════════════ */
+    #theme-chalk {
+      background: #1b2133;
+      color: #e8e2d4;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+    #theme-chalk .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 36px;
+      border-bottom: 1px solid #2c3550;
+    }
+    #theme-chalk .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    #theme-chalk .logo .dot { color: #e8a04a; }
+    #theme-chalk .top-nav {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+    }
+    #theme-chalk .top-nav a {
+      text-decoration: none;
+      color: #8891a8;
+      font-weight: 500;
+    }
+    #theme-chalk .top-nav a.active { color: #e8e2d4; }
+
+    #theme-chalk .hero {
+      padding: 56px 36px 48px;
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+    }
+    #theme-chalk .hero-text { flex: 1; }
+    #theme-chalk .hero-text .kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #e8a04a;
+      margin-bottom: 16px;
+    }
+    #theme-chalk .hero-text h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    #theme-chalk .hero-text h1 .accent { color: #e8a04a; }
+    #theme-chalk .hero-text p {
+      color: #8891a8;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 400px;
+      margin-bottom: 28px;
+    }
+    #theme-chalk .search {
+      display: flex;
+      gap: 10px;
+      max-width: 380px;
+    }
+    #theme-chalk .search input {
+      flex: 1;
+      background: #232d45;
+      border: 1px solid #2c3550;
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #e8e2d4;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    #theme-chalk .search input::placeholder { color: #4a5568; }
+    #theme-chalk .search button {
+      background: #e8a04a;
+      color: #1b2133;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    #theme-chalk .chalk-cats {
+      padding: 0 36px 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    #theme-chalk .chalk-cat {
+      background: #232d45;
+      border: 1px solid #2c3550;
+      border-radius: 10px;
+      padding: 20px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    #theme-chalk .chalk-cat:hover { border-color: #e8a04a; }
+    #theme-chalk .chalk-cat .chalk-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+    #theme-chalk .chalk-cat h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    #theme-chalk .chalk-cat .chalk-count {
+      font-size: 0.75rem;
+      color: #8891a8;
+    }
+    #theme-chalk .chalk-cat .chalk-num {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      font-family: 'Fraunces', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #e8a04a;
+      opacity: 0.2;
+      line-height: 1;
+    }
+
+    #theme-chalk .chalk-games {
+      padding: 0 36px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      border-top: 1px solid #2c3550;
+      border-bottom: 1px solid #2c3550;
+    }
+    #theme-chalk .chalk-game-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 1px solid #232d45;
+      cursor: pointer;
+      transition: padding-left 0.15s;
+    }
+    #theme-chalk .chalk-game-row:hover { padding-left: 8px; }
+    #theme-chalk .chalk-game-row h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    #theme-chalk .chalk-game-row p {
+      font-size: 0.78rem;
+      color: #8891a8;
+      margin-top: 2px;
+    }
+    #theme-chalk .chalk-game-row .chalk-badge {
+      font-size: 0.7rem;
+      color: #8891a8;
+      background: #232d45;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      margin-left: 16px;
+    }
+    #theme-chalk .chalk-game-row .chalk-badge.highlight {
+      background: #e8a04a22;
+      color: #e8a04a;
+    }
+  </style>
+</head>
+<body>
+
+<!-- SWITCHER -->
+<div class="switcher">
+  <div class="switcher-label">Pick a vibe →</div>
+  <button id="btn-retro" class="theme-btn active" onclick="show('retro')">Warm Retro Catalog</button>
+  <button id="btn-bold" class="theme-btn" onclick="show('bold')">Bold & Stark</button>
+  <button id="btn-earthy" class="theme-btn" onclick="show('earthy')">Earthy / Handmade</button>
+  <button id="btn-chalk" class="theme-btn" onclick="show('chalk')">Chalk Nightboard</button>
+</div>
+
+
+<!-- ══════════════════
+     THEME 1: WARM RETRO
+══════════════════ -->
+<div id="theme-retro" class="preview-wrap active">
+  <div class="top-bar">
+    <div class="logo">Game<span>Maxxing</span></div>
+    <div class="top-nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Card Games</a>
+      <a href="#">Mind Games</a>
+      <a href="#">Riddles</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Vol. I — Group Games Collection</div>
+    <h1>Every game<br/>worth <em>playing.</em></h1>
+    <p>A curated archive of group games — from the classics to the ones nobody can remember the rules to.</p>
+    <div class="search">
+      <input type="text" placeholder="Search the archive…" />
+      <button>Search</button>
+    </div>
+  </div>
+
+  <div class="section-rule"><span>Browse by category</span><hr/></div>
+
+  <div class="cat-grid" style="margin: 0 36px 32px;">
+    <div class="cat-item">
+      <div class="num">12</div>
+      <div class="name">🃏 Card Games</div>
+      <div class="label">games in archive</div>
+    </div>
+    <div class="cat-item">
+      <div class="num">08</div>
+      <div class="name">🧠 Mind Games</div>
+      <div class="label">games in archive</div>
+    </div>
+    <div class="cat-item">
+      <div class="num">15</div>
+      <div class="name">🎭 Riddles</div>
+      <div class="label">games in archive</div>
+    </div>
+    <div class="cat-item">
+      <div class="num">05</div>
+      <div class="name">🎲 Dice Games</div>
+      <div class="label">games in archive</div>
+    </div>
+    <div class="cat-item">
+      <div class="num">09</div>
+      <div class="name">🗣️ Word Games</div>
+      <div class="label">games in archive</div>
+    </div>
+  </div>
+
+  <div class="section-rule"><span>Recently added</span><hr/></div>
+
+  <div style="border-top: 2px solid #1c1208; margin: 0 36px 48px;">
+    <div class="game-row">
+      <div class="idx">01</div>
+      <div>
+        <h3>Uno Attack</h3>
+        <p>Classic Uno with a motorized launcher — press the button and hope for the best.</p>
+      </div>
+      <div class="meta">
+        <span>🃏 Card Game</span>
+        <span>👥 2–10 players</span>
+        <span>⏱ 15–30 min</span>
+      </div>
+    </div>
+    <div class="game-row">
+      <div class="idx">02</div>
+      <div>
+        <h3>Two Truths & a Lie</h3>
+        <p>Guess which statement is the lie. Works with any group size.</p>
+      </div>
+      <div class="meta">
+        <span>🧠 Mind Game</span>
+        <span>👥 3+ players</span>
+        <span>⏱ Open ended</span>
+      </div>
+    </div>
+    <div class="game-row">
+      <div class="idx">03</div>
+      <div>
+        <h3>20 Questions</h3>
+        <p>Think of anything. The group gets 20 yes/no questions to figure it out.</p>
+      </div>
+      <div class="meta">
+        <span>🎭 Riddle</span>
+        <span>👥 3+ players</span>
+        <span>⏱ 10–20 min</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════
+     THEME 2: BOLD FLAT
+══════════════════ -->
+<div id="theme-bold" class="preview-wrap">
+  <div class="top-bar">
+    <div class="logo">GAME<span>MAXX</span></div>
+    <div class="top-nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Cards</a>
+      <a href="#">Mind</a>
+      <a href="#">Riddles</a>
+      <a href="#">All</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h1>EVERY<br/><em>GAME</em><br/><span class="outline">YOU KNOW</span></h1>
+    </div>
+    <div class="hero-right">
+      <p>A personal archive of group games — documented so you never forget the rules again.</p>
+      <div class="count-block">49</div>
+      <div class="count-label">Games catalogued</div>
+    </div>
+  </div>
+
+  <div class="cat-strip">
+    <div class="cat-strip-item active">
+      <div class="cat-name">🃏 Card Games</div>
+      <div class="cat-count">12 games</div>
+    </div>
+    <div class="cat-strip-item">
+      <div class="cat-name">🧠 Mind Games</div>
+      <div class="cat-count">8 games</div>
+    </div>
+    <div class="cat-strip-item">
+      <div class="cat-name">🎭 Riddles</div>
+      <div class="cat-count">15 games</div>
+    </div>
+    <div class="cat-strip-item">
+      <div class="cat-name">🎲 Dice</div>
+      <div class="cat-count">5 games</div>
+    </div>
+    <div class="cat-strip-item">
+      <div class="cat-name">🗣️ Word Games</div>
+      <div class="cat-count">9 games</div>
+    </div>
+  </div>
+
+  <div class="games-block">
+    <div class="game-tile">
+      <div class="tile-tag">Card Game</div>
+      <h3>Uno Attack</h3>
+      <p>Classic Uno with a motorized launcher. You never know how many cards you'll get.</p>
+      <div class="tile-footer">
+        <span class="players">👥 2–10 players</span>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="game-tile">
+      <div class="tile-tag">Card Game</div>
+      <h3>Spoons</h3>
+      <p>Grab a spoon before everyone else. Gets physical and chaotic fast.</p>
+      <div class="tile-footer">
+        <span class="players">👥 3–8 players</span>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="game-tile">
+      <div class="tile-tag">Card Game</div>
+      <h3>Egyptian Rat Screw</h3>
+      <p>Slap the pile at the right moment to collect all the cards.</p>
+      <div class="tile-footer">
+        <span class="players">👥 2–6 players</span>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+    <div class="game-tile">
+      <div class="tile-tag">Card Game</div>
+      <h3>Presidents</h3>
+      <p>Climb the social ladder. Be president, avoid being the scum.</p>
+      <div class="tile-footer">
+        <span class="players">👥 4–7 players</span>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════
+     THEME 3: EARTHY
+══════════════════ -->
+<div id="theme-earthy" class="preview-wrap">
+  <div class="top-bar">
+    <div class="logo"><span>GM</span> GameMaxxing</div>
+    <div class="top-nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Card Games</a>
+      <a href="#">Mind Games</a>
+      <a href="#">Riddles</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-left">
+      <h1>All your group<br/>games, <span class="highlight">organized.</span></h1>
+      <p>A personal game book — every game you know, documented with rules, player counts, and how-to-play guides.</p>
+    </div>
+    <div class="hero-right">
+      <div class="big-num">49</div>
+      <div class="small-label">games documented</div>
+      <div class="cat-pills">
+        <div class="cat-pill"><span>🃏 Card Games</span><span>12</span></div>
+        <div class="cat-pill"><span>🧠 Mind Games</span><span>8</span></div>
+        <div class="cat-pill"><span>🎭 Riddles</span><span>15</span></div>
+        <div class="cat-pill"><span>🎲 Dice</span><span>5</span></div>
+        <div class="cat-pill"><span>🗣️ Words</span><span>9</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat-row">
+    <div class="cat-chip active">🃏 Card Games</div>
+    <div class="cat-chip">🧠 Mind Games</div>
+    <div class="cat-chip">🎭 Riddles</div>
+    <div class="cat-chip">🎲 Dice Games</div>
+    <div class="cat-chip">🗣️ Word Games</div>
+    <div class="cat-chip">➕ Add</div>
+  </div>
+
+  <div class="game-masonry">
+    <div class="game-card">
+      <div class="card-tag">Card Game</div>
+      <h3>Uno Attack</h3>
+      <p>Classic Uno with a motorized launcher. You never know how many cards will fly out.</p>
+      <div class="card-footer">
+        <span class="tag">👥 2–10</span>
+        <span class="tag">⏱ 15–30 min</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="card-tag">Mind Game</div>
+      <h3>Two Truths & a Lie</h3>
+      <p>One person makes three statements. The group guesses which one is false.</p>
+      <div class="card-footer">
+        <span class="tag">👥 3+</span>
+        <span class="tag">No materials</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="card-tag">Card Game</div>
+      <h3>Spoons</h3>
+      <p>Collect four matching cards, then grab a spoon. Last one without a spoon is out.</p>
+      <div class="card-footer">
+        <span class="tag">👥 3–8</span>
+        <span class="tag">Spoons needed</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="card-tag">Riddle</div>
+      <h3>20 Questions</h3>
+      <p>Think of anything. The group gets exactly 20 yes/no questions to figure it out.</p>
+      <div class="card-footer">
+        <span class="tag">👥 3+</span>
+        <span class="tag">10–20 min</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="card-tag">Card Game</div>
+      <h3>Egyptian Rat Screw</h3>
+      <p>Slap the pile when doubles or sandwiches appear. Fastest reflexes win the stack.</p>
+      <div class="card-footer">
+        <span class="tag">👥 2–6</span>
+        <span class="tag">High energy</span>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="card-tag">Word Game</div>
+      <h3>Word Association</h3>
+      <p>Say the first word that comes to mind. Hesitate or repeat — you're out.</p>
+      <div class="card-footer">
+        <span class="tag">👥 3+</span>
+        <span class="tag">No materials</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════
+     THEME 4: CHALK NIGHTBOARD
+══════════════════ -->
+<div id="theme-chalk" class="preview-wrap">
+  <div class="top-bar">
+    <div class="logo">GameMaxxing<span class="dot">.</span></div>
+    <div class="top-nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Card Games</a>
+      <a href="#">Mind Games</a>
+      <a href="#">Riddles</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-text">
+      <div class="kicker">Your personal game archive</div>
+      <h1>Games worth<br/>playing <span class="accent">together.</span></h1>
+      <p>A living collection of every group game you know — rules, how-to-play guides, and player info all in one place.</p>
+      <div class="search">
+        <input type="text" placeholder="Find a game…" />
+        <button>Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chalk-cats">
+    <div class="chalk-cat">
+      <span class="chalk-icon">🃏</span>
+      <h3>Card Games</h3>
+      <div class="chalk-count">12 games</div>
+      <div class="chalk-num">12</div>
+    </div>
+    <div class="chalk-cat">
+      <span class="chalk-icon">🧠</span>
+      <h3>Mind Games</h3>
+      <div class="chalk-count">8 games</div>
+      <div class="chalk-num">08</div>
+    </div>
+    <div class="chalk-cat">
+      <span class="chalk-icon">🎭</span>
+      <h3>Riddles</h3>
+      <div class="chalk-count">15 games</div>
+      <div class="chalk-num">15</div>
+    </div>
+    <div class="chalk-cat">
+      <span class="chalk-icon">🎲</span>
+      <h3>Dice Games</h3>
+      <div class="chalk-count">5 games</div>
+      <div class="chalk-num">05</div>
+    </div>
+  </div>
+
+  <div style="padding: 0 36px; margin-bottom: 16px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 3px; color: #4a5568;">Recently added</div>
+  </div>
+
+  <div class="chalk-games" style="margin: 0 36px 48px;">
+    <div class="chalk-game-row">
+      <div>
+        <h3>Uno Attack</h3>
+        <p>Motorized launcher Uno — expect chaos</p>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span class="chalk-badge highlight">🃏 Card Game</span>
+        <span class="chalk-badge">👥 2–10</span>
+      </div>
+    </div>
+    <div class="chalk-game-row">
+      <div>
+        <h3>Two Truths & a Lie</h3>
+        <p>Spot the bluff in three statements</p>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span class="chalk-badge highlight">🧠 Mind Game</span>
+        <span class="chalk-badge">👥 3+</span>
+      </div>
+    </div>
+    <div class="chalk-game-row">
+      <div>
+        <h3>Egyptian Rat Screw</h3>
+        <p>Slap the pile, collect the cards</p>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span class="chalk-badge highlight">🃏 Card Game</span>
+        <span class="chalk-badge">👥 2–6</span>
+      </div>
+    </div>
+    <div class="chalk-game-row">
+      <div>
+        <h3>20 Questions</h3>
+        <p>Yes or no — figure out what they're thinking</p>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <span class="chalk-badge highlight">🎭 Riddle</span>
+        <span class="chalk-badge">👥 3+</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const themes = ['retro', 'bold', 'earthy', 'chalk'];
+  function show(t) {
+    themes.forEach(id => {
+      document.getElementById('theme-' + id).classList.toggle('active', id === t);
+      document.getElementById('btn-' + id).classList.toggle('active', id === t);
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+</script>
+</body>
+</html>
