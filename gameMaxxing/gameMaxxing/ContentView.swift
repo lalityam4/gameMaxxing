@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(GameStore.self) private var store
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if store.currentUser != nil {
+            HomeView()
+        } else {
+            AuthView()
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environment(GameStore())
 }
