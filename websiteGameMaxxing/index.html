@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="retro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GameMaxxing — your personal game library. Browse 73 games, look up rules, and add your own.">
+  <title>GameMaxxing</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-inner">
+      <button class="header-back" id="headerBack" aria-label="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        Back
+      </button>
+
+      <h1 class="header-title" id="headerTitle">GameMaxxing</h1>
+
+      <div class="header-controls">
+        <!-- Theme picker -->
+        <div class="theme-picker">
+          <button class="theme-btn" id="themeToggle" aria-label="Change theme" title="Change theme">
+            🎨
+          </button>
+          <div class="theme-dropdown" id="themeDropdown"></div>
+        </div>
+
+        <!-- Add game button -->
+        <button class="btn-add-game" id="addGameBtn" aria-label="Add custom game">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Add Game
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main content ───────────────────────────────────── -->
+  <main id="main" role="main">
+    <!-- Rendered by app.js -->
+  </main>
+
+  <!-- ── Toast notification ─────────────────────────────── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ── Confirm modal ──────────────────────────────────── -->
+  <div class="modal-overlay" id="confirmOverlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-title" id="confirmTitle">Are you sure?</div>
+      <div class="modal-body" id="confirmBody"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="confirmCancel">Cancel</button>
+        <button class="btn btn-danger" id="confirmOk">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Scripts ────────────────────────────────────────── -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
