@@ -21,6 +21,7 @@ struct HomeView: View {
                         searchBar
                         if searchText.isEmpty {
                             categoriesSection
+                            toolsEntryRow
                             recentSection
                         } else {
                             searchResultsSection
@@ -109,8 +110,8 @@ struct HomeView: View {
                 .padding(.top, 24)
             }
 
-            let columns = [GridItem(.flexible()), GridItem(.flexible())]
-            LazyVGrid(columns: columns, spacing: 1) {
+            let columns = [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
+            LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(store.allCategories) { category in
                     NavigationLink(destination: CategoryView(category: category)) {
                         CategoryCell(category: category, count: store.visibleGames(for: category).count)
@@ -121,6 +122,41 @@ struct HomeView: View {
             .padding(.horizontal, 20)
             .padding(.top, 4)
             .padding(.bottom, 8)
+        }
+    }
+
+    // MARK: - Tools Entry Row
+
+    private var toolsEntryRow: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            RetroSectionHeader(title: "Tools")
+
+            NavigationLink(destination: ToolsHubView()) {
+                HStack(spacing: 14) {
+                    Text("🛠")
+                        .font(.system(size: 24))
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Game Tools")
+                            .font(.retroSerif(17, weight: .semibold))
+                            .foregroundStyle(Color.retroInk)
+                        Text("Score tracker, timer, name picker & more")
+                            .font(.retroMono(10))
+                            .tracking(0.5)
+                            .foregroundStyle(Color.retroBrown)
+                    }
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Color.retroBorder)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .overlay(alignment: .bottom) {
+                    Rectangle().fill(Color.retroBorder).frame(height: 1)
+                        .padding(.horizontal, 20)
+                }
+            }
+            .buttonStyle(.plain)
         }
     }
 

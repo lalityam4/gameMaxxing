@@ -1266,25 +1266,6 @@ struct GameLibrary {
         ),
 
         Game(
-            id: UUID(uuidString: "40000007-0000-0000-0000-000000000000")!,
-            name: "Connection 3-2-1",
-            categoryId: wordGamesId,
-            description: "Two players count down from 3 and simultaneously say a word. Then they count down again and try to converge on the same word. Keep going until both say the same word.",
-            steps: [
-                GameStep(stepNumber: 1, title: "Pair up", description: "Two players face each other. Everyone else watches."),
-                GameStep(stepNumber: 2, title: "First words — 3-2-1", description: "Count down together: '3, 2, 1' — both players say any word simultaneously."),
-                GameStep(stepNumber: 3, title: "Find the connection", description: "Look at the two words said. Think about what concept connects them."),
-                GameStep(stepNumber: 4, title: "Converge — 3-2-1", description: "Count down again. Both players say a new word simultaneously that bridges the previous two words. The goal is to say the same word."),
-                GameStep(stepNumber: 5, title: "Keep going", description: "Repeat until both players say the exact same word on the countdown. Count how many rounds it took."),
-                GameStep(stepNumber: 6, title: "Win", description: "Try to beat your record. Play multiple pairs. The pair that converges in the fewest rounds wins the round."),
-            ],
-            whatYouNeed: ["Nothing — just people"],
-            minPlayers: 2, maxPlayers: 99,
-            duration: "Open-ended", difficulty: "Easy",
-            isLibraryGame: true
-        ),
-
-        Game(
             id: UUID(uuidString: "40000008-0000-0000-0000-000000000000")!,
             name: "Contact",
             categoryId: wordGamesId,

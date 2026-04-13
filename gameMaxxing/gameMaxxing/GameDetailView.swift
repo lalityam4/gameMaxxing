@@ -23,6 +23,8 @@ struct GameDetailView: View {
                     whatYouNeedSection
                     RetroDivider()
                     howToPlaySection
+                    RetroDivider()
+                    playToolsSection
                 }
                 .padding(.bottom, 60)
             }
@@ -132,6 +134,41 @@ struct GameDetailView: View {
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
+        }
+    }
+
+    // MARK: - Play Tools Section
+
+    private var playToolsSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            RetroSectionHeader(title: "Play this game")
+
+            NavigationLink(destination: ToolsHubView()) {
+                HStack(spacing: 14) {
+                    Text("🛠")
+                        .font(.system(size: 22))
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Open Tools")
+                            .font(.retroSerif(16, weight: .semibold))
+                            .foregroundStyle(Color.retroInk)
+                        Text("Score tracker, timer, name picker & more")
+                            .font(.retroMono(10))
+                            .tracking(0.5)
+                            .foregroundStyle(Color.retroBrown)
+                    }
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Color.retroBorder)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .overlay(alignment: .bottom) {
+                    Rectangle().fill(Color.retroBorder).frame(height: 1)
+                        .padding(.horizontal, 20)
+                }
+            }
+            .buttonStyle(.plain)
         }
     }
 
