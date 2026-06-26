@@ -489,6 +489,10 @@ struct ScoreTrackerView: View {
             players[i].roundScore = 0
         }
         round += 1
+
+        withAnimation(.easeInOut(duration: 0.4)) {
+            players.sort { $0.total > $1.total }
+        }
     }
 
     private func reset() {

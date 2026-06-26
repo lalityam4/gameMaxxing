@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1284">
+<title>GameMaxxing — Track Every Round</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1284px;
+    min-height: 2778px;
+    overflow: hidden;
+    background: #FAF4EA;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* ── TOP CAPTION BAR ── */
+  .caption {
+    width: 1284px;
+    height: 300px;
+    background: #1C1208;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .caption .emoji { font-size: 80px; line-height: 1; }
+  .caption .feature-title {
+    font-family: Georgia, serif;
+    font-size: 72px;
+    font-weight: bold;
+    color: #FFFFFF;
+  }
+  .caption .subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #D4B99A;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── MOCKUP ── */
+  .mockup {
+    width: 1284px;
+    background: #FAF4EA;
+  }
+
+  /* Nav bar */
+  .nav-bar {
+    width: 100%;
+    height: 110px;
+    background: #FAF4EA;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    justify-content: space-between;
+  }
+  .nav-back {
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    color: #C04B1A;
+  }
+  .nav-title {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+  .nav-reset {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #6B5040;
+    letter-spacing: 1px;
+  }
+
+  /* Round header */
+  .round-header {
+    background: #1C1208;
+    padding: 36px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .round-label {
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    color: #C04B1A;
+    letter-spacing: 5px;
+    margin-bottom: 8px;
+  }
+  .round-title {
+    font-family: Georgia, serif;
+    font-size: 80px;
+    font-weight: bold;
+    color: #FAF4EA;
+    line-height: 1;
+  }
+  .leading-badge {
+    text-align: right;
+  }
+  .leading-label {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #D4B99A;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .leading-player {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #C04B1A;
+  }
+  .leading-score {
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    color: #D4B99A;
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  /* Score table */
+  .table-wrap {
+    padding: 0 50px;
+  }
+  .table-header {
+    display: grid;
+    grid-template-columns: 60px 1fr 200px 180px 220px;
+    gap: 0;
+    border-bottom: 2px solid #1C1208;
+    padding: 24px 0 20px 0;
+  }
+  .th {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .th:nth-child(3), .th:nth-child(4) { text-align: center; }
+  .th:nth-child(5) { text-align: center; }
+
+  .player-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 200px 180px 220px;
+    gap: 0;
+    align-items: center;
+    border-bottom: 2px solid #D4B99A;
+    padding: 28px 0;
+  }
+  .player-row.leader {
+    background: #FDF8F0;
+  }
+  .rank {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #6B5040;
+    font-weight: bold;
+  }
+  .rank.first { color: #C04B1A; }
+
+  .player-info {}
+  .player-name {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #1C1208;
+    line-height: 1;
+  }
+  .player-name.leader-name { color: #C04B1A; }
+  .player-tag {
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    color: #6B5040;
+    letter-spacing: 2px;
+    margin-top: 6px;
+  }
+  .round-score {
+    font-family: Georgia, serif;
+    font-size: 44px;
+    font-weight: bold;
+    color: #1C1208;
+    text-align: center;
+  }
+  .total-score {
+    font-family: Georgia, serif;
+    font-size: 48px;
+    font-weight: bold;
+    color: #1C1208;
+    text-align: center;
+  }
+  .total-score.leader-score { color: #C04B1A; }
+
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .s-btn {
+    width: 54px;
+    height: 54px;
+    border: 2px solid #D4B99A;
+    background: #FAF4EA;
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: #1C1208;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+  .s-val {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: bold;
+    color: #1C1208;
+    min-width: 40px;
+    text-align: center;
+  }
+
+  /* Submit row */
+  .submit-row {
+    display: flex;
+    gap: 20px;
+    padding: 32px 50px;
+    border-bottom: 2px solid #D4B99A;
+  }
+  .submit-btn {
+    flex: 1;
+    background: #C04B1A;
+    color: #FAF4EA;
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    letter-spacing: 3px;
+    padding: 24px;
+    text-align: center;
+    border-radius: 4px;
+  }
+  .add-player-btn {
+    border: 2px solid #D4B99A;
+    background: #FAF4EA;
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    letter-spacing: 2px;
+    padding: 24px 40px;
+    color: #6B5040;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* Section header */
+  .section-header {
+    padding: 36px 50px 20px 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #1C1208;
+    letter-spacing: 5px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: #D4B99A;
+  }
+
+  /* History table */
+  .history-wrap {
+    padding: 0 50px 40px 50px;
+  }
+  .hist-header {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    border-bottom: 2px solid #1C1208;
+    padding-bottom: 18px;
+    margin-bottom: 4px;
+  }
+  .hist-th {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    color: #6B5040;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+  .hist-th:first-child { text-align: left; }
+
+  .hist-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    padding: 20px 0;
+    border-bottom: 2px solid #D4B99A;
+  }
+  .hist-cell {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #1C1208;
+    text-align: center;
+  }
+  .hist-cell:first-child {
+    font-weight: bold;
+    color: #C04B1A;
+    text-align: left;
+    letter-spacing: 2px;
+  }
+  .hist-cell.winner {
+    color: #C04B1A;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP CAPTION -->
+<div class="caption">
+  <div class="emoji">📊</div>
+  <div class="feature-title">Track Every Round</div>
+  <div class="subtitle">Scores, history, and standings</div>
+</div>
+
+<!-- MOCKUP -->
+<div class="mockup">
+
+  <!-- Nav -->
+  <div class="nav-bar">
+    <div class="nav-back">← TOOLS</div>
+    <div class="nav-title">Score Tracker</div>
+    <div class="nav-reset">RESET ↺</div>
+  </div>
+
+  <!-- Round header -->
+  <div class="round-header">
+    <div>
+      <div class="round-label">CURRENT</div>
+      <div class="round-title">Round 3</div>
+    </div>
+    <div class="leading-badge">
+      <div class="leading-label">LEADING</div>
+      <div class="leading-player">Alex</div>
+      <div class="leading-score">24 pts total</div>
+    </div>
+  </div>
+
+  <!-- Score table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="th">#</div>
+      <div class="th">PLAYER</div>
+      <div class="th" style="text-align:center;">THIS ROUND</div>
+      <div class="th" style="text-align:center;">TOTAL</div>
+      <div class="th" style="text-align:center;">ADJUST</div>
+    </div>
+
+    <!-- Row 1: Alex (leader) -->
+    <div class="player-row leader">
+      <div class="rank first">1</div>
+      <div class="player-info">
+        <div class="player-name leader-name">Alex</div>
+        <div class="player-tag">🏆 LEADER</div>
+      </div>
+      <div class="round-score">8</div>
+      <div class="total-score leader-score">24</div>
+      <div class="stepper">
+        <div class="s-btn">−</div>
+        <div class="s-val">8</div>
+        <div class="s-btn">+</div>
+      </div>
+    </div>
+
+    <!-- Row 2: Jordan -->
+    <div class="player-row">
+      <div class="rank">2</div>
+      <div class="player-info">
+        <div class="player-name">Jordan</div>
+        <div class="player-tag">−6 PTS BEHIND</div>
+      </div>
+      <div class="round-score">6</div>
+      <div class="total-score">18</div>
+      <div class="stepper">
+        <div class="s-btn">−</div>
+        <div class="s-val">6</div>
+        <div class="s-btn">+</div>
+      </div>
+    </div>
+
+    <!-- Row 3: Sam -->
+    <div class="player-row">
+      <div class="rank">3</div>
+      <div class="player-info">
+        <div class="player-name">Sam</div>
+        <div class="player-tag">−9 PTS BEHIND</div>
+      </div>
+      <div class="round-score">5</div>
+      <div class="total-score">15</div>
+      <div class="stepper">
+        <div class="s-btn">−</div>
+        <div class="s-val">5</div>
+        <div class="s-btn">+</div>
+      </div>
+    </div>
+
+    <!-- Row 4: Riley -->
+    <div class="player-row">
+      <div class="rank">4</div>
+      <div class="player-info">
+        <div class="player-name">Riley</div>
+        <div class="player-tag">−13 PTS BEHIND</div>
+      </div>
+      <div class="round-score">3</div>
+      <div class="total-score">11</div>
+      <div class="stepper">
+        <div class="s-btn">−</div>
+        <div class="s-val">3</div>
+        <div class="s-btn">+</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Submit row -->
+  <div class="submit-row">
+    <div class="submit-btn">SUBMIT ROUND 3 →</div>
+    <div class="add-player-btn">+ ADD PLAYER</div>
+  </div>
+
+  <!-- Round history -->
+  <div class="section-header">ROUND HISTORY</div>
+  <div class="history-wrap">
+    <div class="hist-header">
+      <div class="hist-th">ROUND</div>
+      <div class="hist-th">ALEX</div>
+      <div class="hist-th">JORDAN</div>
+      <div class="hist-th">SAM</div>
+      <div class="hist-th">RILEY</div>
+    </div>
+    <div class="hist-row">
+      <div class="hist-cell">RND 1</div>
+      <div class="hist-cell winner">10</div>
+      <div class="hist-cell">7</div>
+      <div class="hist-cell">6</div>
+      <div class="hist-cell">4</div>
+    </div>
+    <div class="hist-row">
+      <div class="hist-cell">RND 2</div>
+      <div class="hist-cell winner">6</div>
+      <div class="hist-cell winner">5</div>
+      <div class="hist-cell">4</div>
+      <div class="hist-cell">4</div>
+    </div>
+    <div class="hist-row" style="border-bottom: none; opacity: 0.5;">
+      <div class="hist-cell">RND 3</div>
+      <div class="hist-cell" style="color:#6B5040;">—</div>
+      <div class="hist-cell" style="color:#6B5040;">—</div>
+      <div class="hist-cell" style="color:#6B5040;">—</div>
+      <div class="hist-cell" style="color:#6B5040;">—</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

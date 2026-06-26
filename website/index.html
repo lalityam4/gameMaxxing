@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameMaxxing — Your Ultimate Game Night Companion</title>
+  <meta name="description" content="GameMaxxing: 72+ games across 10 categories, 11 built-in tools, fully offline. The ultimate iOS companion for every game night." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Base ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #FAF4EA;
+      --ink:        #1C1208;
+      --rust:       #C04B1A;
+      --brown:      #6B5040;
+      --card:       #F0E4D0;
+      --border:     #D4B99A;
+      --white:      #FFFFFF;
+      --rust-light: #E8956A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    /* ── Utilities ──────────────────────────────────────── */
+    .label {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rust);
+    }
+
+    .rule {
+      border: none;
+      border-top: 1.5px solid var(--rust);
+      margin: 1rem 0;
+    }
+
+    .rule--thin {
+      border-top-width: 1px;
+      opacity: 0.4;
+    }
+
+    .section {
+      padding: 80px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 48px;
+    }
+
+    .section-header .label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+
+    .section-subtitle {
+      margin-top: 12px;
+      font-size: 1rem;
+      color: var(--brown);
+      max-width: 540px;
+    }
+
+    /* ── Navbar ─────────────────────────────────────────── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 2px solid var(--rust);
+      padding: 0 24px;
+    }
+
+    .navbar__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .navbar__logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .navbar__links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      align-items: center;
+    }
+
+    .navbar__links a {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .navbar__links a:hover { color: var(--rust); }
+
+    .navbar__links .btn-appstore {
+      background: var(--rust);
+      color: var(--white);
+      padding: 7px 16px;
+      border-radius: 4px;
+      border: none;
+      transition: background 0.15s;
+    }
+
+    .navbar__links .btn-appstore:hover {
+      background: #a83e14;
+      color: var(--white);
+    }
+
+    /* ── Hamburger (mobile) ─────────────────────────────── */
+    .navbar__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .navbar__hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      transition: all 0.2s;
+    }
+
+    /* ── Hero ───────────────────────────────────────────── */
+    .hero {
+      background: var(--ink);
+      padding: 100px 24px 80px;
+      text-align: center;
+    }
+
+    .hero__icon {
+      width: 80px;
+      height: 80px;
+      background: var(--rust);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 28px;
+      border: 2px solid var(--rust-light);
+    }
+
+    .hero__title {
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero__tagline {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+      color: var(--border);
+      letter-spacing: 0.15em;
+      margin-bottom: 44px;
+      line-height: 1.5;
+    }
+
+    .hero__cta {
+      display: inline-block;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      border: 2px solid var(--white);
+      padding: 14px 34px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .hero__cta:hover {
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .hero__rule {
+      border: none;
+      border-top: 2px solid var(--rust);
+      margin: 64px auto 0;
+      max-width: 1100px;
+    }
+
+    /* ── Features ───────────────────────────────────────── */
+    .features__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 32px;
+    }
+
+    .feature-card__emoji {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-card__title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .feature-card__body {
+      font-size: 0.93rem;
+      color: var(--brown);
+      line-height: 1.65;
+    }
+
+    /* ── Categories ─────────────────────────────────────── */
+    .categories-wrap {
+      background: var(--ink);
+      padding: 0;
+    }
+
+    .categories-wrap .section {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    .categories-wrap .section-title,
+    .categories-wrap .section-subtitle {
+      color: var(--white);
+    }
+
+    .categories-wrap .label { color: var(--rust-light); }
+    .categories-wrap .rule  { border-color: var(--rust-light); opacity: 0.6; }
+
+    .categories__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 2px solid #3a2c20;
+    }
+
+    .category-item {
+      padding: 28px 20px;
+      border-right: 2px solid #3a2c20;
+      border-bottom: 2px solid #3a2c20;
+      position: relative;
+    }
+
+    .category-item:nth-child(4n) { border-right: none; }
+    .category-item:nth-last-child(-n+4):nth-child(4n+1),
+    .category-item:nth-last-child(-n+3):nth-child(4n+2),
+    .category-item:nth-last-child(-n+2):nth-child(4n+3),
+    .category-item:nth-last-child(-n+1):nth-child(4n+4) {
+      border-bottom: none;
+    }
+    /* simpler: remove bottom border from last row */
+    .category-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .category-item__emoji {
+      font-size: 2.2rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .category-item__name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .category-item__count {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rust-light);
+    }
+
+    .category-item__bar {
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--rust);
+      margin-top: 14px;
+    }
+
+    /* ── Tools ──────────────────────────────────────────── */
+    .tools__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 2px solid var(--border);
+    }
+
+    .tool-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-right: 2px solid var(--border);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .tool-item:nth-child(2n) { border-right: none; }
+
+    /* Remove bottom border from last two items */
+    .tool-item:nth-last-child(-n+2) { border-bottom: none; }
+    /* If odd number, last single item spans */
+    .tool-item:last-child:nth-child(odd) {
+      grid-column: span 2;
+      border-right: none;
+    }
+
+    .tool-item__emoji {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .tool-item__info {}
+
+    .tool-item__name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .tool-item__desc {
+      font-size: 0.8rem;
+      color: var(--brown);
+      margin-top: 2px;
+    }
+
+    /* ── Support ────────────────────────────────────────── */
+    .support-intro {
+      font-size: 1rem;
+      color: var(--brown);
+      margin-bottom: 40px;
+      max-width: 540px;
+    }
+
+    /* Pure CSS accordion */
+    .faq { margin-bottom: 48px; }
+
+    .faq__item {
+      border: 2px solid var(--border);
+      margin-bottom: -2px;
+    }
+
+    .faq__item input[type="checkbox"] {
+      display: none;
+    }
+
+    .faq__label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      cursor: pointer;
+      background: var(--card);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      user-select: none;
+      gap: 16px;
+    }
+
+    .faq__label:hover { background: #e8d8c4; }
+
+    .faq__indicator {
+      font-family: 'Courier Prime', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--rust);
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      line-height: 1;
+    }
+
+    .faq__item input:checked ~ .faq__label .faq__indicator {
+      transform: rotate(45deg);
+    }
+
+    .faq__body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq__item input:checked ~ .faq__body {
+      max-height: 200px;
+    }
+
+    .faq__body p {
+      padding: 18px 24px 22px;
+      font-size: 0.95rem;
+      color: var(--brown);
+      border-top: 1px solid var(--border);
+      background: var(--cream);
+    }
+
+    .support-contact {
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 32px;
+    }
+
+    .support-contact h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .support-contact p {
+      font-size: 0.95rem;
+      color: var(--brown);
+    }
+
+    .support-contact a {
+      color: var(--rust);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 1px solid var(--rust);
+    }
+
+    .support-contact a:hover { color: #a83e14; }
+
+    /* ── Privacy ────────────────────────────────────────── */
+    .privacy-wrap {
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 48px;
+    }
+
+    .privacy-wrap .last-updated {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 32px;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .privacy-section {
+      margin-bottom: 36px;
+    }
+
+    .privacy-section h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .privacy-section p {
+      font-size: 0.93rem;
+      color: var(--brown);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+
+    .privacy-section a {
+      color: var(--rust);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rust);
+    }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    .footer {
+      background: var(--ink);
+      padding: 60px 24px 40px;
+    }
+
+    .footer__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer__brand h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .footer__brand p {
+      font-size: 0.83rem;
+      color: var(--border);
+      letter-spacing: 0.08em;
+    }
+
+    .footer__links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: right;
+    }
+
+    .footer__links a {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--border);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer__links a:hover { color: var(--rust-light); }
+
+    .footer__divider {
+      border: none;
+      border-top: 1px solid #3a2c20;
+      margin-bottom: 28px;
+    }
+
+    .footer__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer__copy {
+      font-size: 0.78rem;
+      color: #7a6050;
+      letter-spacing: 0.06em;
+    }
+
+    .footer__made {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+    }
+
+    /* ── Mobile Responsive ──────────────────────────────── */
+    @media (max-width: 768px) {
+      .navbar__links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: var(--cream);
+        border-bottom: 2px solid var(--rust);
+        flex-direction: column;
+        gap: 0;
+        padding: 16px 24px;
+      }
+
+      .navbar__links.open { display: flex; }
+
+      .navbar__links li { width: 100%; }
+
+      .navbar__links a {
+        display: block;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .navbar__links .btn-appstore {
+        display: inline-block;
+        margin-top: 8px;
+        border-bottom: none;
+      }
+
+      .navbar__hamburger { display: flex; }
+
+      .navbar { position: sticky; }
+
+      .features__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .categories__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .category-item:nth-child(2n) { border-right: none; }
+      .category-item:nth-child(4n) { border-right: 2px solid #3a2c20; }
+      .category-item:nth-child(2n) { border-right: none; }
+      .category-item { border-bottom: 2px solid #3a2c20; }
+      .category-item:nth-last-child(-n+2) { border-bottom: none; }
+
+      .tools__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-item { border-right: none; }
+      .tool-item:nth-last-child(-n+2) { border-bottom: 2px solid var(--border); }
+      .tool-item:last-child { border-bottom: none; }
+      .tool-item:last-child:nth-child(odd) { grid-column: span 1; }
+
+      .privacy-wrap { padding: 28px 20px; }
+
+      .footer__top { flex-direction: column; }
+      .footer__links { text-align: left; }
+
+      .footer__bottom { flex-direction: column; align-items: flex-start; }
+
+      .section { padding: 56px 20px; }
+
+      .hero { padding: 72px 20px 60px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero__title { font-size: 2.4rem; }
+      .categories__grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="#" class="navbar__logo">GameMaxxing</a>
+
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="navbar__links" id="navLinks">
+        <li><a href="#support">Support</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#" class="btn-appstore">App Store</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ──────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero__icon">GM</div>
+    <h1 class="hero__title">GameMaxxing</h1>
+    <p class="hero__tagline">Your ultimate companion for every game night.</p>
+    <a href="#" class="hero__cta">Download on the App Store</a>
+    <hr class="hero__rule" />
+  </section>
+
+  <!-- ── Features ──────────────────────────────────────── -->
+  <div style="background: var(--cream);">
+    <div class="section">
+      <div class="section-header">
+        <span class="label">What makes it different</span>
+        <hr class="rule" />
+        <h2 class="section-title">Why GameMaxxing</h2>
+        <p class="section-subtitle">Everything you need to run a great game night — in one offline app.</p>
+      </div>
+
+      <div class="features__grid">
+        <div class="feature-card">
+          <span class="feature-card__emoji">📚</span>
+          <h3 class="feature-card__title">72+ Games</h3>
+          <p class="feature-card__body">Ten categories covering card games, mind games, riddles, word games, dice games, drinking games, party games, app games, car games, and paper &amp; pen games.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-card__emoji">🛠</span>
+          <h3 class="feature-card__title">11 Built-In Tools</h3>
+          <p class="feature-card__body">Score tracker, dice roller, bracket creator, team generator, round robin scheduler, coin flip, name picker, random matching, random number, drink distributor, and timer.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-card__emoji">👥</span>
+          <h3 class="feature-card__title">Player Filter</h3>
+          <p class="feature-card__body">Filter any category by group size. See only the games that work for your exact headcount — no scrolling past games that don't fit.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-card__emoji">📴</span>
+          <h3 class="feature-card__title">Fully Offline</h3>
+          <p class="feature-card__body">No account required, no internet needed. Works anywhere — at a cabin, in the car, on a plane. Your data stays on your device.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Game Categories ────────────────────────────────── -->
+  <div class="categories-wrap">
+    <div class="section">
+      <div class="section-header">
+        <span class="label">Browse by type</span>
+        <hr class="rule" />
+        <h2 class="section-title">Game Library</h2>
+        <p class="section-subtitle">Ten hand-curated categories with detailed rules, step-by-step instructions, and what you need to play.</p>
+      </div>
+
+      <div class="categories__grid">
+        <div class="category-item">
+          <span class="category-item__emoji">🃏</span>
+          <div class="category-item__name">Card Games</div>
+          <div class="category-item__count">26 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🧠</span>
+          <div class="category-item__name">Mind Games</div>
+          <div class="category-item__count">4 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🎭</span>
+          <div class="category-item__name">Riddles</div>
+          <div class="category-item__count">8 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🗣️</span>
+          <div class="category-item__name">Word Games</div>
+          <div class="category-item__count">7 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🎲</span>
+          <div class="category-item__name">Dice Games</div>
+          <div class="category-item__count">2 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🍻</span>
+          <div class="category-item__name">Drinking Games</div>
+          <div class="category-item__count">5 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🎉</span>
+          <div class="category-item__name">Party Games</div>
+          <div class="category-item__count">7 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">📱</span>
+          <div class="category-item__name">App Games</div>
+          <div class="category-item__count">5 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">🚗</span>
+          <div class="category-item__name">Car Games</div>
+          <div class="category-item__count">1 game</div>
+          <span class="category-item__bar"></span>
+        </div>
+        <div class="category-item">
+          <span class="category-item__emoji">✏️</span>
+          <div class="category-item__name">Paper &amp; Pen</div>
+          <div class="category-item__count">7 games</div>
+          <span class="category-item__bar"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tools ─────────────────────────────────────────── -->
+  <div style="background: var(--cream);">
+    <div class="section">
+      <div class="section-header">
+        <span class="label">Everything you need at the table</span>
+        <hr class="rule" />
+        <h2 class="section-title">In-Game Tools</h2>
+        <p class="section-subtitle">Eleven utility tools built right into the app. No browser tabs, no other apps.</p>
+      </div>
+
+      <div class="tools__grid">
+        <div class="tool-item">
+          <span class="tool-item__emoji">🏆</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Score Tracker</div>
+            <div class="tool-item__desc">Keep running scores for any number of players</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🎲</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Dice Roller</div>
+            <div class="tool-item__desc">Roll any combination of dice with a tap</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🏅</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Bracket Creator</div>
+            <div class="tool-item__desc">Single-elimination tournament brackets</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">👫</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Team Generator</div>
+            <div class="tool-item__desc">Randomly split players into balanced teams</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🔄</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Round Robin</div>
+            <div class="tool-item__desc">Auto-generate a full round robin schedule</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🪙</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Coin Flip</div>
+            <div class="tool-item__desc">Heads or tails — instant and fair</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🎤</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Name Picker</div>
+            <div class="tool-item__desc">Randomly select a player from a list</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🔀</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Random Matching</div>
+            <div class="tool-item__desc">Pair up players or items randomly</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🔢</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Random Number</div>
+            <div class="tool-item__desc">Generate a number within any custom range</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">🍺</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Drink Distributor</div>
+            <div class="tool-item__desc">Randomly assign drinks to players</div>
+          </div>
+        </div>
+        <div class="tool-item">
+          <span class="tool-item__emoji">⏱</span>
+          <div class="tool-item__info">
+            <div class="tool-item__name">Timer</div>
+            <div class="tool-item__desc">Countdown timer for timed rounds</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Support ───────────────────────────────────────── -->
+  <div style="background: var(--card); border-top: 2px solid var(--border); border-bottom: 2px solid var(--border);">
+    <div class="section" id="support">
+      <div class="section-header">
+        <span class="label">Get help</span>
+        <hr class="rule" />
+        <h2 class="section-title">Support</h2>
+      </div>
+
+      <p class="support-intro">Having trouble? Find answers to common questions below, or reach out directly.</p>
+
+      <div class="faq">
+
+        <div class="faq__item">
+          <input type="checkbox" id="faq1" />
+          <label class="faq__label" for="faq1">
+            How do I add a custom game?
+            <span class="faq__indicator">+</span>
+          </label>
+          <div class="faq__body">
+            <p>Tap the <strong>···</strong> menu in the top-right corner of any category screen and select <strong>Add Game</strong>. Fill in the name, description, player count, and any steps you want — your game saves locally to your device.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <input type="checkbox" id="faq2" />
+          <label class="faq__label" for="faq2">
+            Can I create my own categories?
+            <span class="faq__indicator">+</span>
+          </label>
+          <div class="faq__body">
+            <p>Yes. Scroll to the bottom of the home screen and tap <strong>New Category</strong>. Choose a name and emoji, then start adding games to it right away.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <input type="checkbox" id="faq3" />
+          <label class="faq__label" for="faq3">
+            How do I restore a hidden game?
+            <span class="faq__indicator">+</span>
+          </label>
+          <div class="faq__body">
+            <p>Navigate to the category that contains the hidden game, tap the <strong>···</strong> menu, and choose <strong>Restore Hidden Games</strong>. All previously hidden games in that category will reappear.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <input type="checkbox" id="faq4" />
+          <label class="faq__label" for="faq4">
+            Does the app require an internet connection?
+            <span class="faq__indicator">+</span>
+          </label>
+          <div class="faq__body">
+            <p>No. GameMaxxing works fully offline. All game data, custom games, and preferences are stored locally on your device. There is no account, no login, and no server involved.</p>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <input type="checkbox" id="faq5" />
+          <label class="faq__label" for="faq5">
+            How do I contact support?
+            <span class="faq__indicator">+</span>
+          </label>
+          <div class="faq__body">
+            <p>Email us at <a href="mailto:support@gamemaxxing.app">support@gamemaxxing.app</a> and we'll get back to you as soon as possible.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="support-contact">
+        <h3>Still need help?</h3>
+        <p>Reach out any time and we'll do our best to assist.</p>
+        <p style="margin-top: 12px;">Email: <a href="mailto:support@gamemaxxing.app">support@gamemaxxing.app</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Privacy Policy ────────────────────────────────── -->
+  <div style="background: var(--cream);">
+    <div class="section" id="privacy">
+      <div class="section-header">
+        <span class="label">Your data &amp; your rights</span>
+        <hr class="rule" />
+        <h2 class="section-title">Privacy Policy</h2>
+      </div>
+
+      <div class="privacy-wrap">
+        <p class="last-updated">Last updated: May 2026</p>
+
+        <div class="privacy-section">
+          <h3>Overview</h3>
+          <p>GameMaxxing is a fully offline iOS application. We have built it with privacy as a core principle: the app does not collect, transmit, or store any personal information on external servers. All data you create within the app — including custom games, custom categories, scores, and preferences — is stored exclusively on your own device using iOS standard storage mechanisms.</p>
+          <p>This Privacy Policy explains what we do and do not do with your information, and is intended to be plain and straightforward.</p>
+        </div>
+
+        <hr class="rule rule--thin" />
+
+        <div class="privacy-section">
+          <h3>Information We Do Not Collect</h3>
+          <p>GameMaxxing does not collect any personal information. Specifically, we do not collect or have access to:</p>
+          <p>
+            — Your name, email address, phone number, or any contact information<br />
+            — Your location or device location data<br />
+            — Usage analytics, session data, or behavioral tracking<br />
+            — Crash reports or diagnostic logs sent to external servers<br />
+            — Device identifiers or advertising IDs<br />
+            — Any account credentials (there is no account system)
+          </p>
+          <p>We do not use third-party analytics SDKs, advertising networks, or any tracking frameworks.</p>
+        </div>
+
+        <hr class="rule rule--thin" />
+
+        <div class="privacy-section">
+          <h3>Local Storage</h3>
+          <p>Any data you enter into GameMaxxing — such as custom games, custom categories, hidden game preferences, and in-app settings — is stored locally on your iPhone using iOS UserDefaults and standard local persistence mechanisms. This data never leaves your device and is never transmitted to us or any third party.</p>
+          <p>If you delete the app, all locally stored data is removed from your device in accordance with standard iOS behavior. We have no copy of that data and cannot recover it.</p>
+        </div>
+
+        <hr class="rule rule--thin" />
+
+        <div class="privacy-section">
+          <h3>Third-Party Services</h3>
+          <p>GameMaxxing does not integrate with any third-party services, SDKs, APIs, or cloud platforms. There are no embedded analytics libraries, advertising networks, social media SDKs, or crash reporting tools in the app. Your use of the app does not create any data relationship with any company other than Apple, which governs the iOS operating system on your device through their own privacy policies.</p>
+        </div>
+
+        <hr class="rule rule--thin" />
+
+        <div class="privacy-section">
+          <h3>Children's Privacy</h3>
+          <p>GameMaxxing includes content related to drinking games and is intended for users who are 17 years of age or older, in accordance with the App Store age rating. We do not knowingly collect any information from children under 13. Because the app collects no personal data whatsoever, there is no special risk to children's information; however, parental discretion is advised regarding the nature of certain game content in the app.</p>
+        </div>
+
+        <hr class="rule rule--thin" />
+
+        <div class="privacy-section">
+          <h3>Changes to This Policy</h3>
+          <p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated "Last updated" date at the top. We encourage you to review this page periodically. Continued use of the app following the posting of changes constitutes your acceptance of those changes.</p>
+          <p>Because we do not collect your contact information, we cannot notify you of updates by email — all changes are published here.</p>
+        </div>
+
+        <hr class="rule rule--thin" />
+
+        <div class="privacy-section">
+          <h3>Contact Us</h3>
+          <p>If you have any questions about this Privacy Policy or our privacy practices, please contact us:</p>
+          <p style="margin-top: 10px;"><strong>Email:</strong> <a href="mailto:support@gamemaxxing.app">support@gamemaxxing.app</a></p>
+          <p style="margin-top: 6px; font-size: 0.85rem; color: var(--brown);">We will respond to all privacy-related inquiries within a reasonable timeframe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <h2>GameMaxxing</h2>
+          <p>Your ultimate companion for every game night.</p>
+        </div>
+        <nav class="footer__links">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#support">Support</a>
+          <a href="#">App Store</a>
+        </nav>
+      </div>
+
+      <hr class="footer__divider" />
+
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2026 GameMaxxing. All rights reserved.</span>
+        <span class="footer__made">Made for iPhone</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

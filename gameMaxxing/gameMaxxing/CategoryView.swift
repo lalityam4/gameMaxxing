@@ -21,6 +21,7 @@ struct CategoryView: View {
     @State private var pendingCategoryName = ""
     @State private var gameTab: GameTab = .library
     @State private var drinkFilter: DrinkFilter = .all
+    @State private var playerCount: Int? = nil
 
     // MARK: - Computed Data
 
@@ -40,12 +41,19 @@ struct CategoryView: View {
         tabFilteredGames.contains { !$0.isDrinkingGame }
     }
 
-    private var games: [Game] {
+    private var drinkFilteredGames: [Game] {
         guard hasMixedDrinkContent else { return tabFilteredGames }
         switch drinkFilter {
         case .all:         return tabFilteredGames
         case .drinking:    return tabFilteredGames.filter { $0.isDrinkingGame }
         case .nonDrinking: return tabFilteredGames.filter { !$0.isDrinkingGame }
+        }
+    }
+
+    private var games: [Game] {
+        guard let count = playerCount else { return drinkFilteredGames }
+        return drinkFilteredGames.filter {
+            $0.minPlayers <= count && ($0.maxPlayers >= 99 || $0.maxPlayers >= count)
         }
     }
 
@@ -88,6 +96,12 @@ struct CategoryView: View {
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
                 }
+
+                // Player count filter
+                playerFilterBar
+                    .listRowBackground(Color.retroCream)
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
 
                 // Top border
                 Rectangle().fill(Color.retroInk).frame(height: 2)
@@ -217,6 +231,7 @@ struct CategoryView: View {
                 Button {
                     gameTab = tab
                     drinkFilter = .all
+                    playerCount = nil
                 } label: {
                     Text(tab.rawValue)
                         .font(.retroMono(12))
@@ -258,6 +273,65 @@ struct CategoryView: View {
         .padding(.bottom, 12)
     }
 
+    // MARK: - Player Filter Bar
+
+    private var playerFilterBar: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "person.2")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(Color.retroBrown)
+            Text("PLAYERS")
+                .font(.retroMono(10))
+                .tracking(1)
+                .foregroundStyle(Color.retroBrown)
+
+            Spacer(minLength: 0)
+
+            // Minus
+            Button {
+                if let count = playerCount {
+                    playerCount = count > 2 ? count - 1 : nil
+                }
+            } label: {
+                Text("−")
+                    .font(.retroSerif(16, weight: .semibold))
+                    .foregroundStyle(playerCount == nil ? Color.retroBorder : Color.retroBrown)
+                    .frame(width: 36, height: 32)
+                    .background(Color.retroCard)
+                    .overlay(Rectangle().stroke(Color.retroBorder, lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+            .disabled(playerCount == nil)
+
+            // Count display
+            Text(playerCount.map { "\($0)" } ?? "ANY")
+                .font(.retroMono(12))
+                .foregroundStyle(playerCount != nil ? Color.retroCream : Color.retroBrown)
+                .frame(width: 52, height: 32)
+                .background(playerCount != nil ? Color.retroInk : Color.retroCard)
+                .overlay(
+                    Rectangle()
+                        .stroke(playerCount != nil ? Color.retroInk : Color.retroBorder, lineWidth: 1)
+                        .padding(.horizontal, -1)
+                )
+
+            // Plus
+            Button {
+                playerCount = (playerCount ?? 1) + 1
+            } label: {
+                Text("+")
+                    .font(.retroSerif(16, weight: .semibold))
+                    .foregroundStyle(Color.retroRust)
+                    .frame(width: 36, height: 32)
+                    .background(Color.retroCard)
+                    .overlay(Rectangle().stroke(Color.retroBorder, lineWidth: 1))
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 12)
+    }
+
     // MARK: - Header
 
     private var categoryHeader: some View {
@@ -281,16 +355,27 @@ struct CategoryView: View {
 
     private var emptyState: some View {
         VStack(spacing: 8) {
-            Text(gameTab == .library ? "No library games." : "No custom games yet.")
-                .font(.retroSerif(18))
-                .foregroundStyle(Color.retroInk)
-            Text(gameTab == .library
-                 ? "Restore hidden games from the ··· menu above."
-                 : "Tap 'Add a game' below to create one.")
-                .font(.retroMono(11))
-                .tracking(0.5)
-                .foregroundStyle(Color.retroBrown)
-                .multilineTextAlignment(.center)
+            if let count = playerCount {
+                Text("No games for \(count) players.")
+                    .font(.retroSerif(18))
+                    .foregroundStyle(Color.retroInk)
+                Text("Try a different player count or tap × to clear the filter.")
+                    .font(.retroMono(11))
+                    .tracking(0.5)
+                    .foregroundStyle(Color.retroBrown)
+                    .multilineTextAlignment(.center)
+            } else {
+                Text(gameTab == .library ? "No library games." : "No custom games yet.")
+                    .font(.retroSerif(18))
+                    .foregroundStyle(Color.retroInk)
+                Text(gameTab == .library
+                     ? "Restore hidden games from the ··· menu above."
+                     : "Tap 'Add a game' below to create one.")
+                    .font(.retroMono(11))
+                    .tracking(0.5)
+                    .foregroundStyle(Color.retroBrown)
+                    .multilineTextAlignment(.center)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(40)

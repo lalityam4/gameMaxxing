@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1284">
+<title>GameMaxxing — Built-In Game Tools</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1284px;
+    min-height: 2778px;
+    overflow: hidden;
+    background: #FAF4EA;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* ── TOP CAPTION BAR ── */
+  .caption {
+    width: 1284px;
+    height: 300px;
+    background: #1C1208;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .caption .emoji { font-size: 80px; line-height: 1; }
+  .caption .feature-title {
+    font-family: Georgia, serif;
+    font-size: 72px;
+    font-weight: bold;
+    color: #FFFFFF;
+  }
+  .caption .subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #D4B99A;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── MOCKUP ── */
+  .mockup {
+    width: 1284px;
+    background: #FAF4EA;
+  }
+
+  /* Nav bar */
+  .nav-bar {
+    width: 100%;
+    height: 110px;
+    background: #FAF4EA;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    justify-content: space-between;
+  }
+  .nav-title {
+    font-family: Georgia, serif;
+    font-size: 46px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+  .nav-sub {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    letter-spacing: 2px;
+  }
+
+  /* Tools header */
+  .tools-header {
+    padding: 50px 50px 40px 50px;
+    border-bottom: 2px solid #D4B99A;
+    background: #F0E4D0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .tools-title {
+    font-family: Georgia, serif;
+    font-size: 80px;
+    font-weight: bold;
+    color: #1C1208;
+    line-height: 1;
+  }
+  .tools-count {
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    color: #6B5040;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  /* Tool rows */
+  .tool-list {
+    padding: 0 50px;
+  }
+  .tool-row {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    padding: 38px 0;
+    border-bottom: 2px solid #D4B99A;
+  }
+  .tool-num {
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    color: #C04B1A;
+    font-weight: bold;
+    min-width: 52px;
+    letter-spacing: 1px;
+  }
+  .tool-emoji {
+    font-size: 52px;
+    line-height: 1;
+    min-width: 72px;
+    text-align: center;
+  }
+  .tool-body {
+    flex: 1;
+  }
+  .tool-name {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #1C1208;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+  .tool-desc {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #6B5040;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+  }
+  .tool-chevron {
+    font-family: 'Courier New', monospace;
+    font-size: 40px;
+    color: #D4B99A;
+  }
+  .tool-badge {
+    background: #C04B1A;
+    color: #FFFFFF;
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    margin-left: 16px;
+    vertical-align: middle;
+  }
+  .tool-badge-new {
+    background: #1C1208;
+    color: #FAF4EA;
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    margin-left: 16px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP CAPTION -->
+<div class="caption">
+  <div class="emoji">🛠</div>
+  <div class="feature-title">Built-In Game Tools</div>
+  <div class="subtitle">Everything you need to play</div>
+</div>
+
+<!-- MOCKUP -->
+<div class="mockup">
+
+  <!-- Nav -->
+  <div class="nav-bar">
+    <div class="nav-title">Tools Hub</div>
+    <div class="nav-sub">8 TOOLS AVAILABLE</div>
+  </div>
+
+  <!-- Header -->
+  <div class="tools-header">
+    <div>
+      <div class="tools-title">🛠 Tools</div>
+    </div>
+    <div class="tools-count">ALWAYS AVAILABLE · NO SETUP</div>
+  </div>
+
+  <!-- Tool list -->
+  <div class="tool-list">
+
+    <div class="tool-row">
+      <div class="tool-num">01</div>
+      <div class="tool-emoji">📊</div>
+      <div class="tool-body">
+        <div class="tool-name">Score Tracker <span class="tool-badge">POPULAR</span></div>
+        <div class="tool-desc">Track scores across rounds. Supports up to 8 players<br>with full round history and leaderboard.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">02</div>
+      <div class="tool-emoji">🎯</div>
+      <div class="tool-body">
+        <div class="tool-name">Name Picker</div>
+        <div class="tool-desc">Randomly select a player from your group. Add names,<br>pick a random one, eliminate until one remains.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">03</div>
+      <div class="tool-emoji">⏱</div>
+      <div class="tool-body">
+        <div class="tool-name">Timer</div>
+        <div class="tool-desc">Countdown or stopwatch. Preset durations: 30s, 1m, 2m, 5m.<br>Plays a sound alarm when time runs out.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">04</div>
+      <div class="tool-emoji">🪙</div>
+      <div class="tool-body">
+        <div class="tool-name">Coin Flip</div>
+        <div class="tool-desc">Flip a fair coin. Shows animated result with heads or tails.<br>Tracks streak of consecutive same-side results.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">05</div>
+      <div class="tool-emoji">🎲</div>
+      <div class="tool-body">
+        <div class="tool-name">Dice Roller</div>
+        <div class="tool-desc">Roll 1–6 dice at once. Choose D4, D6, D8, D10, D12, D20<br>types. Shows total and individual values.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">06</div>
+      <div class="tool-emoji">🍺</div>
+      <div class="tool-body">
+        <div class="tool-name">Drink Distributor</div>
+        <div class="tool-desc">Assign drinks fairly across the group. Enter the total<br>number and it distributes evenly with remainder logic.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">07</div>
+      <div class="tool-emoji">🏆</div>
+      <div class="tool-body">
+        <div class="tool-name">Bracket Creator <span class="tool-badge-new">NEW</span></div>
+        <div class="tool-desc">Build single-elimination tournaments for 4, 8, or 16<br>players. Auto-advances winners each round.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+    <div class="tool-row">
+      <div class="tool-num">08</div>
+      <div class="tool-emoji">👥</div>
+      <div class="tool-body">
+        <div class="tool-name">Team Generator</div>
+        <div class="tool-desc">Split your group into balanced teams randomly.<br>Supports 2–4 teams with custom team names.</div>
+      </div>
+      <div class="tool-chevron">›</div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

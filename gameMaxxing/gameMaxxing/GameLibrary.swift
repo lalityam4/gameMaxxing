@@ -118,7 +118,7 @@ struct GameLibrary {
             description: "Get rid of all your cards by matching the suit or number on the discard pile. Eights are wild and let you name the next suit.",
             steps: [
                 GameStep(stepNumber: 1, title: "Deal 5 cards each", description: "Deal 5 cards to each player (7 in a 2-player game). Place the rest face-down as the draw pile and flip the top card."),
-                GameStep(stepNumber: 2, title: "Match suit or number", description: "Play a card matching the discard's suit or number. You can play as many matching cards as you like in one turn."),
+                GameStep(stepNumber: 2, title: "Match suit or number", description: "Play one card matching the discard's suit or number."),
                 GameStep(stepNumber: 3, title: "Play an Eight", description: "Eights are wild — play one any time and call the next suit."),
                 GameStep(stepNumber: 4, title: "Draw if you can't play", description: "If you can't play, draw from the pile until you can or until the pile runs out."),
                 GameStep(stepNumber: 5, title: "Win", description: "First player to empty their hand wins the round. Score the cards left in opponents' hands (face cards = 10, Aces = 1, Eights = 50)."),
@@ -385,7 +385,7 @@ struct GameLibrary {
                 GameStep(stepNumber: 3, title: "Meld if you can", description: "Lay down any sets (3+ cards of the same value) or runs (3+ consecutive cards of the same suit) face-up on the table."),
                 GameStep(stepNumber: 4, title: "Lay off on melds", description: "You can add cards to existing melds on the table — your own or other players'."),
                 GameStep(stepNumber: 5, title: "Discard", description: "End your turn by discarding one card face-up onto the discard pile."),
-                GameStep(stepNumber: 6, title: "Win", description: "First player to meld or lay off all their cards wins. Score remaining cards in opponents' hands (face cards = 10, Aces = 1 or 11)."),
+                GameStep(stepNumber: 6, title: "Win", description: "First player to meld or lay off all their cards wins. Score remaining cards in opponents' hands (face cards = 10, Aces = 1)."),
             ],
             whatYouNeed: ["Standard 52-card deck", "Pen and paper for scoring"],
             minPlayers: 2, maxPlayers: 6,
@@ -438,7 +438,7 @@ struct GameLibrary {
             categoryId: cardGamesId,
             description: "A team-based set collection game. Ask teammates and opponents for cards to complete half-suits. Only your team can claim a half-suit you think you hold.",
             steps: [
-                GameStep(stepNumber: 1, title: "Set up teams and deck", description: "Split into 2 teams of 3 (or 4). Remove the 8s from the deck. The remaining cards form 8 half-suits (low: A–7 per suit, high: 9–K per suit). Deal all cards evenly."),
+                GameStep(stepNumber: 1, title: "Set up teams and deck", description: "Split into 2 teams of 3 (or 4). Remove the 8s from the deck. The remaining 48 cards form 8 half-suits of 6: Minor (2–7 per suit) and Major (9, 10, J, Q, K, A per suit). Deal all cards evenly."),
                 GameStep(stepNumber: 2, title: "Ask for cards", description: "On your turn, ask any opponent for a specific card (e.g. 'Jack, do you have the 3 of Hearts?'). You must already hold a card from that half-suit."),
                 GameStep(stepNumber: 3, title: "Transfer or lose your turn", description: "If they have it, they hand it over and you ask again. If not, your turn ends and that player goes next."),
                 GameStep(stepNumber: 4, title: "Ask teammates", description: "You can also ask teammates for cards — useful for consolidating a half-suit onto one player."),
@@ -737,6 +737,26 @@ struct GameLibrary {
             whatYouNeed: ["5 dice", "Yahtzee scorecard (or paper)", "Pen"],
             minPlayers: 2, maxPlayers: 6,
             duration: "30–45 min", difficulty: "Easy",
+            isLibraryGame: true
+        ),
+
+        Game(
+            id: UUID(uuidString: "50000003-0000-0000-0000-000000000000")!,
+            name: "Liar's Dice",
+            categoryId: diceGamesId,
+            description: "Roll your dice in secret and bluff your way through bids on what everyone has. Call someone a liar — or get called out yourself. Lose a die each time you're wrong. Last player with dice wins.",
+            steps: [
+                GameStep(stepNumber: 1, title: "Roll in secret", description: "Each player rolls their 5 dice under a cup and looks at them without showing anyone else."),
+                GameStep(stepNumber: 2, title: "Make a bid", description: "The first player bids on how many dice of a certain face value exist across all players' dice combined. For example: 'three fours' means at least 3 dice total show a 4."),
+                GameStep(stepNumber: 3, title: "Ones are wild", description: "1s count as any face value. A die showing a 1 contributes to any bid, regardless of the called number."),
+                GameStep(stepNumber: 4, title: "Raise the bid", description: "Each new bid must be higher than the last — either a higher quantity (same or any value) or the same quantity with a higher face value. You can never bid lower."),
+                GameStep(stepNumber: 5, title: "Call the bluff", description: "Instead of bidding, say 'Liar!' to challenge the previous bid. All players lift their cups to reveal their dice."),
+                GameStep(stepNumber: 6, title: "Resolve the challenge", description: "Count all dice showing the bid value (plus all 1s). If the count meets or exceeds the bid, the caller loses a die. If the count falls short, the bidder loses a die."),
+                GameStep(stepNumber: 7, title: "Win", description: "A player eliminated when they lose their last die. Last player with any dice remaining wins."),
+            ],
+            whatYouNeed: ["5 dice per player", "A cup per player to hide dice"],
+            minPlayers: 2, maxPlayers: 6,
+            duration: "15–30 min", difficulty: "Medium",
             isLibraryGame: true
         ),
 

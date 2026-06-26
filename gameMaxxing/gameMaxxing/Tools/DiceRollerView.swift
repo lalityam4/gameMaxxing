@@ -175,10 +175,10 @@ struct DiceRollerView: View {
             Rectangle().fill(Color.retroInk).frame(height: 2)
                 .padding(.horizontal, 20)
 
-            let cols = min(results.count, 5)
-            let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: cols)
+            let cols = min(results.count, 4)
+            let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: cols)
 
-            LazyVGrid(columns: columns, spacing: 1) {
+            LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(Array(results.enumerated()), id: \.offset) { _, value in
                     RetroSingleDie(value: value, sides: diceSides)
                 }
@@ -234,24 +234,107 @@ struct RetroSingleDie: View {
 
     var isMax: Bool { value == sides }
 
+    private let faceSize: CGFloat = 60
+    private let depth: CGFloat  = 7
+    private let pipSize: CGFloat = 10
+
+    private var faceColor: Color {
+        isMax ? Color(red: 1.0, green: 0.97, blue: 0.94)
+              : Color(red: 0.96, green: 0.91, blue: 0.83)
+    }
+    private var depthColor: Color {
+        isMax ? Color(red: 0.50, green: 0.16, blue: 0.04)
+              : Color(red: 0.20, green: 0.14, blue: 0.09)
+    }
+    private var borderColor: Color {
+        isMax ? Color.retroRust : Color(red: 0.42, green: 0.30, blue: 0.20)
+    }
+    private var pipColor: Color {
+        isMax ? Color.retroRust : Color(red: 0.11, green: 0.07, blue: 0.03)
+    }
+
     var body: some View {
-        VStack(spacing: 4) {
-            Text("\(value)")
-                .font(.retroSerif(32, weight: .bold))
-                .foregroundStyle(isMax ? Color.retroRust : Color.retroInk)
-                .contentTransition(.numericText())
-            Text("d\(sides)")
-                .font(.retroMono(9))
-                .tracking(1)
-                .foregroundStyle(Color.retroBrown)
+        ZStack(alignment: .topLeading) {
+            // Right parallelogram face
+            Path { p in
+                p.move(to:    CGPoint(x: faceSize,         y: 0))
+                p.addLine(to: CGPoint(x: faceSize + depth, y: depth))
+                p.addLine(to: CGPoint(x: faceSize + depth, y: faceSize + depth))
+                p.addLine(to: CGPoint(x: faceSize,         y: faceSize))
+                p.closeSubpath()
+            }
+            .fill(depthColor)
+
+            // Bottom parallelogram face
+            Path { p in
+                p.move(to:    CGPoint(x: 0,                y: faceSize))
+                p.addLine(to: CGPoint(x: depth,            y: faceSize + depth))
+                p.addLine(to: CGPoint(x: faceSize + depth, y: faceSize + depth))
+                p.addLine(to: CGPoint(x: faceSize,         y: faceSize))
+                p.closeSubpath()
+            }
+            .fill(depthColor.opacity(0.75))
+
+            // Top face
+            Rectangle()
+                .fill(faceColor)
+                .frame(width: faceSize, height: faceSize)
+                .overlay(faceContent)
+                .overlay(Rectangle().stroke(borderColor, lineWidth: isMax ? 2 : 1.5))
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .background(isMax ? Color.retroCard : Color.retroCream)
-        .overlay(Rectangle().stroke(
-            isMax ? Color.retroRust : Color.retroBorder,
-            lineWidth: isMax ? 2 : 1
-        ))
+        .frame(width: faceSize + depth, height: faceSize + depth)
+        .frame(maxWidth: .infinity) // centre in grid cell
+    }
+
+    @ViewBuilder
+    private var faceContent: some View {
+        if sides == 6, value >= 1, value <= 6 {
+            pipLayout
+        } else {
+            VStack(spacing: 2) {
+                Text("\(value)")
+                    .font(.retroSerif(24, weight: .bold))
+                    .foregroundStyle(isMax ? Color.retroRust : Color.retroInk)
+                    .contentTransition(.numericText())
+                Text("d\(sides)")
+                    .font(.retroMono(8))
+                    .tracking(1)
+                    .foregroundStyle(Color.retroBrown)
+            }
+        }
+    }
+
+    // Pip positions calibrated for 60×60 face
+    private var pipPositions: [CGPoint] {
+        let l: CGFloat = 16, r: CGFloat = 44   // left / right column
+        let t: CGFloat = 14, m: CGFloat = 30, b: CGFloat = 46  // top / mid / bottom row
+        switch value {
+        case 1: return [CGPoint(x: 30, y: 30)]
+        case 2: return [CGPoint(x: r, y: t), CGPoint(x: l, y: b)]
+        case 3: return [CGPoint(x: r, y: t), CGPoint(x: 30, y: 30), CGPoint(x: l, y: b)]
+        case 4: return [CGPoint(x: l, y: t), CGPoint(x: r, y: t),
+                        CGPoint(x: l, y: b), CGPoint(x: r, y: b)]
+        case 5: return [CGPoint(x: l, y: t), CGPoint(x: r, y: t),
+                        CGPoint(x: 30, y: 30),
+                        CGPoint(x: l, y: b), CGPoint(x: r, y: b)]
+        case 6: return [CGPoint(x: l, y: t), CGPoint(x: r, y: t),
+                        CGPoint(x: l, y: m), CGPoint(x: r, y: m),
+                        CGPoint(x: l, y: b), CGPoint(x: r, y: b)]
+        default: return []
+        }
+    }
+
+    @ViewBuilder
+    private var pipLayout: some View {
+        ZStack {
+            ForEach(Array(pipPositions.enumerated()), id: \.offset) { _, pt in
+                Circle()
+                    .fill(pipColor)
+                    .frame(width: pipSize, height: pipSize)
+                    .position(x: pt.x, y: pt.y)
+            }
+        }
+        .frame(width: faceSize, height: faceSize)
     }
 }
 

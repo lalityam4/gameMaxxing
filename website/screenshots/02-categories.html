@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1284">
+<title>GameMaxxing — Browse by Category</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1284px;
+    min-height: 2778px;
+    overflow: hidden;
+    background: #FAF4EA;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* ── TOP CAPTION BAR ── */
+  .caption {
+    width: 1284px;
+    height: 300px;
+    background: #1C1208;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .caption .emoji { font-size: 80px; line-height: 1; }
+  .caption .feature-title {
+    font-family: Georgia, serif;
+    font-size: 72px;
+    font-weight: bold;
+    color: #FFFFFF;
+  }
+  .caption .subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #D4B99A;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── MOCKUP ── */
+  .mockup {
+    width: 1284px;
+    background: #FAF4EA;
+  }
+
+  /* Nav bar */
+  .nav-bar {
+    width: 100%;
+    height: 110px;
+    background: #FAF4EA;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    gap: 30px;
+  }
+  .nav-back {
+    font-family: 'Courier New', monospace;
+    font-size: 34px;
+    color: #C04B1A;
+    letter-spacing: 1px;
+  }
+  .nav-title {
+    font-family: Georgia, serif;
+    font-size: 46px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+
+  /* Category header */
+  .cat-header {
+    padding: 50px 50px 30px 50px;
+    border-bottom: 2px solid #D4B99A;
+    background: #F0E4D0;
+  }
+  .cat-emoji { font-size: 72px; line-height: 1; margin-bottom: 16px; }
+  .cat-title {
+    font-family: Georgia, serif;
+    font-size: 80px;
+    font-weight: bold;
+    color: #1C1208;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .cat-meta {
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    color: #6B5040;
+    letter-spacing: 1px;
+  }
+
+  /* Player filter bar */
+  .filter-bar {
+    padding: 28px 50px;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: #FAF4EA;
+  }
+  .filter-label {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #6B5040;
+    letter-spacing: 3px;
+  }
+  .stepper-btn {
+    width: 64px;
+    height: 64px;
+    border: 2px solid #D4B99A;
+    background: #FAF4EA;
+    font-family: Georgia, serif;
+    font-size: 36px;
+    color: #1C1208;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  .stepper-count {
+    width: 80px;
+    height: 64px;
+    background: #1C1208;
+    color: #FAF4EA;
+    font-family: Georgia, serif;
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .filter-note {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    margin-left: 10px;
+  }
+  .filter-spacer { flex: 1; }
+  .filter-reset {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #C04B1A;
+    letter-spacing: 2px;
+  }
+
+  /* Game list */
+  .game-list {
+    padding: 0 50px;
+  }
+  .game-row {
+    border-bottom: 2px solid #D4B99A;
+    padding: 36px 0;
+    display: flex;
+    gap: 36px;
+    align-items: flex-start;
+  }
+  .game-num {
+    font-family: 'Courier New', monospace;
+    font-size: 34px;
+    color: #C04B1A;
+    font-weight: bold;
+    min-width: 56px;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+  .game-body { flex: 1; }
+  .game-name {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #1C1208;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+  .game-desc {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #6B5040;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .chips {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    border: 2px solid #D4B99A;
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    color: #6B5040;
+    padding: 8px 20px;
+    letter-spacing: 1px;
+  }
+  .chip.rust {
+    border-color: #C04B1A;
+    color: #C04B1A;
+  }
+  .game-chevron {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #D4B99A;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP CAPTION -->
+<div class="caption">
+  <div class="emoji">🃏</div>
+  <div class="feature-title">Browse by Category</div>
+  <div class="subtitle">Filtered for your group size</div>
+</div>
+
+<!-- MOCKUP -->
+<div class="mockup">
+
+  <!-- Nav -->
+  <div class="nav-bar">
+    <div class="nav-back">← LIBRARY</div>
+    <div class="nav-title">Card Games</div>
+  </div>
+
+  <!-- Category header -->
+  <div class="cat-header">
+    <div class="cat-emoji">🃏</div>
+    <div class="cat-title">Card Games</div>
+    <div class="cat-meta">18 games · tap any to see how to play</div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="filter-label">👥 PLAYERS</div>
+    <div class="stepper-btn">−</div>
+    <div class="stepper-count">4</div>
+    <div class="stepper-btn">+</div>
+    <div class="filter-note">4 players selected</div>
+    <div class="filter-spacer"></div>
+    <div class="filter-reset">CLEAR ×</div>
+  </div>
+
+  <!-- Game list -->
+  <div class="game-list">
+
+    <div class="game-row">
+      <div class="game-num">01</div>
+      <div class="game-body">
+        <div class="game-name">Kings Cup</div>
+        <div class="game-desc">Draw a card, follow the king's rule. Last king drawn<br>must finish the cup in the center of the table.</div>
+        <div class="chips">
+          <div class="chip">4–10 players</div>
+          <div class="chip">30–60 min</div>
+          <div class="chip rust">DRINKING</div>
+          <div class="chip">Easy</div>
+        </div>
+      </div>
+      <div class="game-chevron">›</div>
+    </div>
+
+    <div class="game-row">
+      <div class="game-num">02</div>
+      <div class="game-body">
+        <div class="game-name">War</div>
+        <div class="game-desc">Each player flips a card simultaneously. Highest card<br>takes both. Ties go to war — three cards face down.</div>
+        <div class="chips">
+          <div class="chip">2–4 players</div>
+          <div class="chip">15–30 min</div>
+          <div class="chip">Easy</div>
+        </div>
+      </div>
+      <div class="game-chevron">›</div>
+    </div>
+
+    <div class="game-row">
+      <div class="game-num">03</div>
+      <div class="game-body">
+        <div class="game-name">Snap</div>
+        <div class="game-desc">Players take turns flipping cards. When two matching<br>cards appear, slap the pile first to claim the stack.</div>
+        <div class="chips">
+          <div class="chip">2–6 players</div>
+          <div class="chip">10–20 min</div>
+          <div class="chip">Easy</div>
+        </div>
+      </div>
+      <div class="game-chevron">›</div>
+    </div>
+
+    <div class="game-row">
+      <div class="game-num">04</div>
+      <div class="game-body">
+        <div class="game-name">Crazy Eights</div>
+        <div class="game-desc">Match the top card by suit or rank. Play an 8 at any<br>time to change the suit. First to empty hand wins.</div>
+        <div class="chips">
+          <div class="chip">2–7 players</div>
+          <div class="chip">20–40 min</div>
+          <div class="chip">Medium</div>
+        </div>
+      </div>
+      <div class="game-chevron">›</div>
+    </div>
+
+    <div class="game-row">
+      <div class="game-num">05</div>
+      <div class="game-body">
+        <div class="game-name">Go Fish</div>
+        <div class="game-desc">Ask opponents for cards to complete sets of four.<br>If they don't have it, you "go fish" from the draw pile.</div>
+        <div class="chips">
+          <div class="chip">2–6 players</div>
+          <div class="chip">15–25 min</div>
+          <div class="chip">Easy</div>
+        </div>
+      </div>
+      <div class="game-chevron">›</div>
+    </div>
+
+    <div class="game-row">
+      <div class="game-num">06</div>
+      <div class="game-body">
+        <div class="game-name">Rummy</div>
+        <div class="game-desc">Form sets and runs in your hand. First player to meld<br>all cards and discard wins the round and scores 0.</div>
+        <div class="chips">
+          <div class="chip">2–6 players</div>
+          <div class="chip">30–60 min</div>
+          <div class="chip">Medium</div>
+        </div>
+      </div>
+      <div class="game-chevron">›</div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

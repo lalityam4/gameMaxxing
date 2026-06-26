@@ -17,6 +17,17 @@ struct RRRound: Identifiable {
     var matches: [RRMatch]
 }
 
+// MARK: - Standing Entry
+
+struct RRStanding: Identifiable {
+    let id: String  // player name
+    var wins: Int = 0
+    var draws: Int = 0
+    var losses: Int = 0
+    var points: Int { wins * 3 + draws }
+    var played: Int { wins + draws + losses }
+}
+
 // MARK: - View
 
 struct RoundRobinView: View {
@@ -34,6 +45,32 @@ struct RoundRobinView: View {
 
     private var completedCount: Int {
         rounds.reduce(0) { $0 + $1.matches.filter { $0.result != .pending }.count }
+    }
+
+    private var standings: [RRStanding] {
+        var table: [String: RRStanding] = [:]
+        for name in names { table[name] = RRStanding(id: name) }
+        for round in rounds {
+            for match in round.matches where match.result != .pending {
+                switch match.result {
+                case .aWins:
+                    table[match.teamA]?.wins   += 1
+                    table[match.teamB]?.losses += 1
+                case .bWins:
+                    table[match.teamB]?.wins   += 1
+                    table[match.teamA]?.losses += 1
+                case .draw:
+                    table[match.teamA]?.draws += 1
+                    table[match.teamB]?.draws += 1
+                case .pending: break
+                }
+            }
+        }
+        return table.values.sorted {
+            if $0.points != $1.points { return $0.points > $1.points }
+            if $0.wins   != $1.wins   { return $0.wins   > $1.wins   }
+            return $0.id < $1.id
+        }
     }
 
     var body: some View {
@@ -201,8 +238,81 @@ struct RoundRobinView: View {
         VStack(alignment: .leading, spacing: 0) {
             activeHeader
             progressSection
+            if completedCount > 0 { standingsSection }
             roundSections
         }
+    }
+
+    private var standingsSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            RetroSectionHeader(title: "Standings")
+            Rectangle().fill(Color.retroInk).frame(height: 2)
+                .padding(.horizontal, 20)
+
+            // Column headers
+            HStack(spacing: 0) {
+                Text("#")
+                    .frame(width: 28, alignment: .leading)
+                Text("PLAYER")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text("P")
+                    .frame(width: 28, alignment: .center)
+                Text("W")
+                    .frame(width: 28, alignment: .center)
+                Text("D")
+                    .frame(width: 28, alignment: .center)
+                Text("L")
+                    .frame(width: 28, alignment: .center)
+                Text("PTS")
+                    .frame(width: 40, alignment: .trailing)
+            }
+            .font(.retroMono(10))
+            .tracking(1)
+            .foregroundStyle(Color.retroBrown)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 8)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(Color.retroBorder).frame(height: 1)
+            }
+
+            ForEach(Array(standings.enumerated()), id: \.element.id) { idx, row in
+                let isLeader = idx == 0 && row.points > 0
+                HStack(spacing: 0) {
+                    Text("\(idx + 1)")
+                        .font(.retroSerif(15))
+                        .foregroundStyle(isLeader ? Color.retroRust : Color.retroBrown)
+                        .frame(width: 28, alignment: .leading)
+                    Text(row.id)
+                        .font(.retroSerif(15, weight: isLeader ? .bold : .regular))
+                        .foregroundStyle(Color.retroInk)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("\(row.played)")
+                        .frame(width: 28, alignment: .center)
+                    Text("\(row.wins)")
+                        .frame(width: 28, alignment: .center)
+                    Text("\(row.draws)")
+                        .frame(width: 28, alignment: .center)
+                    Text("\(row.losses)")
+                        .frame(width: 28, alignment: .center)
+                    Text("\(row.points)")
+                        .font(.retroSerif(15, weight: .bold))
+                        .foregroundStyle(isLeader ? Color.retroRust : Color.retroInk)
+                        .frame(width: 40, alignment: .trailing)
+                }
+                .font(.retroMono(13))
+                .foregroundStyle(Color.retroBrown)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 11)
+                .background(isLeader ? Color.retroRust.opacity(0.07) : Color.clear)
+                .overlay(alignment: .bottom) {
+                    Rectangle().fill(Color.retroBorder).frame(height: 1)
+                        .padding(.horizontal, 20)
+                }
+            }
+        }
+        .padding(.bottom, 8)
+        .animation(.easeInOut(duration: 0.25), value: completedCount)
     }
 
     private var activeHeader: some View {

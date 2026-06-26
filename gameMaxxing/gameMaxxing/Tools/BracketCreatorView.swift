@@ -32,9 +32,39 @@ struct BracketCreatorView: View {
     @State private var newName: String = ""
     @State private var bracketSize: Int = 8
     @State private var rounds: [BracketRound] = []
+    @State private var currentRoundIndex: Int = 0
     @FocusState private var nameFieldFocused: Bool
 
     let bracketSizes = [4, 8, 16, 32]
+
+    // MARK: - Layout Constants
+    @State private var bracketHeight: CGFloat = 600
+
+    private var r1Count:  Int      { max(1, rounds.first?.matches.count ?? 2) }
+    private var cardStep: CGFloat  { (bracketHeight - padV * 2) / CGFloat(r1Count) }
+    private var cardH:    CGFloat  { max(52, min(88, cardStep * 0.87)) }
+    private var cardGap:  CGFloat  { cardStep - cardH }
+
+    private let colW:  CGFloat = 188
+    private let connW: CGFloat = 48
+    private let padH:  CGFloat = 20
+    private let padV:  CGFloat = 24
+
+    private var canvasW: CGFloat {
+        padH * 2 + CGFloat(rounds.count) * colW + CGFloat(max(0, rounds.count - 1)) * connW
+    }
+    private var canvasH: CGFloat { bracketHeight }
+
+    // Vertical position (top edge) of match card at [roundIndex][matchIndex]
+    private func cardTop(ri: Int, mi: Int) -> CGFloat {
+        let slots  = pow(2.0, Double(ri))
+        let slotH  = CGFloat(slots) * cardStep
+        return padV + CGFloat(mi) * slotH + (slotH - cardH) / 2
+    }
+    // Vertical center of a match card
+    private func cardMid(ri: Int, mi: Int) -> CGFloat { cardTop(ri: ri, mi: mi) + cardH / 2 }
+    // Left edge of a round column
+    private func colX(ri: Int) -> CGFloat { padH + CGFloat(ri) * (colW + connW) }
 
     // MARK: - Body
 
@@ -247,57 +277,190 @@ struct BracketCreatorView: View {
     // MARK: - Active View
 
     private var activeView: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                championBanner
-                ForEach(Array(rounds.enumerated()), id: \.element.id) { ri, round in
-                    roundSection(round: round, roundIndex: ri)
+        VStack(spacing: 0) {
+            // Champion banner
+            if let finalRound = rounds.last, let champion = finalRound.matches.first?.winner {
+                HStack(spacing: 10) {
+                    Text("🏆").font(.system(size: 18))
+                    Text("CHAMPION")
+                        .font(.retroMono(10)).tracking(2)
+                        .foregroundStyle(Color.retroCard.opacity(0.8))
+                    Text(champion)
+                        .font(.retroSerif(18, weight: .bold))
+                        .foregroundStyle(Color.retroCream)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(Color.retroInk)
+            }
+
+            // Stage rail + bracket canvas
+            ScrollViewReader { proxy in
+                VStack(spacing: 0) {
+                    stageRail(proxy: proxy)
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        ZStack(alignment: .topLeading) {
+                            // Canvas ground — sets the scroll area size
+                            Color.clear
+                                .frame(width: canvasW, height: canvasH)
+
+                            // Connector lines drawn under the cards
+                            bracketConnectors
+                                .frame(width: canvasW, height: canvasH)
+                                .allowsHitTesting(false)
+
+                            // Round column scroll anchors
+                            ForEach(0..<rounds.count, id: \.self) { ri in
+                                Color.clear.frame(width: 1, height: 1)
+                                    .offset(x: colX(ri: ri), y: 0)
+                                    .id("col_\(ri)")
+                            }
+
+                            // Match cards
+                            ForEach(Array(rounds.enumerated()), id: \.element.id) { ri, round in
+                                ForEach(Array(round.matches.enumerated()), id: \.element.id) { mi, match in
+                                    matchCard(match: match, roundIndex: ri, matchIndex: mi)
+                                        .frame(width: colW, height: cardH)
+                                        .offset(x: colX(ri: ri), y: cardTop(ri: ri, mi: mi))
+                                }
+                            }
+                        }
+                        .frame(width: canvasW, height: canvasH)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { h in
+                        if h > 0 { bracketHeight = h }
+                    }
+                    .onScrollGeometryChange(for: CGFloat.self) { geo in
+                        geo.contentOffset.x
+                    } action: { _, x in
+                        let center = x + 200.0
+                        let ri = rounds.indices.last(where: { colX(ri: $0) <= center }) ?? 0
+                        if ri != currentRoundIndex { currentRoundIndex = ri }
+                    }
                 }
             }
-            .padding(.bottom, 60)
         }
     }
 
-    @ViewBuilder
-    private var championBanner: some View {
-        if let finalRound = rounds.last, let champion = finalRound.matches.first?.winner {
-            VStack(spacing: 6) {
-                Text("🏆 CHAMPION")
-                    .font(.retroMono(10))
-                    .tracking(2)
-                    .foregroundStyle(Color.retroCard)
-                Text(champion)
-                    .font(.retroSerif(28, weight: .bold))
-                    .foregroundStyle(Color.retroCream)
-                    .multilineTextAlignment(.center)
+    // MARK: - Stage Rail
+
+    private func stageRail(proxy: ScrollViewProxy) -> some View {
+        ScrollViewReader { railProxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    ForEach(Array(rounds.enumerated()), id: \.element.id) { ri, round in
+                        let isActive   = currentRoundIndex == ri
+                        let isComplete = round.matches.allSatisfy { $0.winner != nil }
+
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                currentRoundIndex = ri
+                                proxy.scrollTo("col_\(ri)", anchor: .leading)
+                            }
+                        } label: {
+                            VStack(spacing: 0) {
+                                HStack(spacing: 5) {
+                                    if isComplete {
+                                        Image(systemName: "checkmark")
+                                            .font(.system(size: 9, weight: .bold))
+                                            .foregroundStyle(isActive ? Color.retroRust : Color.retroBrown.opacity(0.5))
+                                    }
+                                    Text(round.name.uppercased())
+                                        .font(.retroMono(11))
+                                        .tracking(1.5)
+                                        .foregroundStyle(isActive ? Color.retroInk : Color.retroBrown)
+                                }
+                                .padding(.horizontal, 18)
+                                .padding(.top, 14)
+                                .padding(.bottom, 10)
+
+                                Rectangle()
+                                    .fill(isActive ? Color.retroRust : Color.clear)
+                                    .frame(height: 2)
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .id("rail_\(ri)")
+
+                        if ri < rounds.count - 1 {
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 9, weight: .semibold))
+                                .foregroundStyle(Color.retroBorder)
+                                .padding(.bottom, 2)
+                        }
+                    }
+                }
+                .padding(.horizontal, 12)
             }
-            .frame(maxWidth: .infinity)
-            .padding(20)
-            .background(Color.retroInk)
+            .background(Color.retroCream)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(Color.retroBorder).frame(height: 1)
+            }
+            .onChange(of: currentRoundIndex) { _, newValue in
+                withAnimation { railProxy.scrollTo("rail_\(newValue)", anchor: .center) }
+            }
         }
     }
 
-    private func roundSection(round: BracketRound, roundIndex: Int) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 12) {
-                Text(round.name.uppercased())
-                    .font(.retroMono(10))
-                    .tracking(2)
-                    .foregroundStyle(Color.retroRust)
-                Rectangle()
-                    .fill(Color.retroBorder)
-                    .frame(height: 1)
-            }
-            .padding(.horizontal, 20)
-            .padding(.top, 24)
-            .padding(.bottom, 8)
+    // MARK: - Bracket Connectors (Canvas)
 
-            VStack(spacing: 10) {
-                ForEach(Array(round.matches.enumerated()), id: \.element.id) { mi, match in
-                    matchCard(match: match, roundIndex: roundIndex, matchIndex: mi)
+    private var bracketConnectors: some View {
+        Canvas { ctx, _ in
+            let rust     = Color.retroRust
+            let border   = Color.retroBorder
+            let rustFade = Color.retroRust.opacity(0.45)
+
+            for ri in 0..<(rounds.count - 1) {
+                let fromRound = rounds[ri]
+                var mi = 0
+                while mi + 1 < fromRound.matches.count {
+                    let topMatch  = fromRound.matches[mi]
+                    let botMatch  = fromRound.matches[mi + 1]
+                    let nextMi    = mi / 2
+                    let nextMatch = rounds[ri + 1].matches[nextMi]
+
+                    let x0    = colX(ri: ri) + colW           // right edge of from-column
+                    let x2    = colX(ri: ri + 1)              // left edge of to-column
+                    let x1    = x0 + (x2 - x0) / 2           // midpoint junction
+
+                    let topY  = cardMid(ri: ri, mi: mi)
+                    let botY  = cardMid(ri: ri, mi: mi + 1)
+                    let nextY = cardMid(ri: ri + 1, mi: nextMi)
+
+                    let topDone  = topMatch.winner  != nil
+                    let botDone  = botMatch.winner  != nil
+                    let nextDone = nextMatch.winner != nil
+
+                    // Top horizontal arm
+                    var p = Path()
+                    p.move(to: CGPoint(x: x0, y: topY))
+                    p.addLine(to: CGPoint(x: x1, y: topY))
+                    ctx.stroke(p, with: .color(topDone ? rust : border), lineWidth: 2)
+
+                    // Bottom horizontal arm
+                    p = Path()
+                    p.move(to: CGPoint(x: x0, y: botY))
+                    p.addLine(to: CGPoint(x: x1, y: botY))
+                    ctx.stroke(p, with: .color(botDone ? rust : border), lineWidth: 2)
+
+                    // Vertical spine joining top & bottom arms
+                    p = Path()
+                    p.move(to: CGPoint(x: x1, y: topY))
+                    p.addLine(to: CGPoint(x: x1, y: botY))
+                    ctx.stroke(p, with: .color((topDone || botDone) ? rust : border), lineWidth: 2)
+
+                    // Outgoing arm → next round match
+                    let outColor = nextDone ? rustFade : (topDone || botDone) ? rust : border
+                    p = Path()
+                    p.move(to: CGPoint(x: x1, y: nextY))
+                    p.addLine(to: CGPoint(x: x2, y: nextY))
+                    ctx.stroke(p, with: .color(outColor), lineWidth: 2)
+
+                    mi += 2
                 }
             }
-            .padding(.horizontal, 20)
         }
     }
 
@@ -422,6 +585,7 @@ struct BracketCreatorView: View {
         }
 
         rounds = allRounds
+        currentRoundIndex = 0
         phase = .active
 
         // Auto-advance BYE matches in round 1
@@ -479,6 +643,7 @@ struct BracketCreatorView: View {
 
     private func resetToSetup() {
         rounds = []
+        currentRoundIndex = 0
         phase = .setup
     }
 
