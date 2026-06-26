@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1284">
+<title>GameMaxxing — Tournament Mode</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1284px;
+    min-height: 2778px;
+    overflow: hidden;
+    background: #FAF4EA;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* ── TOP CAPTION BAR ── */
+  .caption {
+    width: 1284px;
+    height: 300px;
+    background: #1C1208;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .caption .emoji { font-size: 80px; line-height: 1; }
+  .caption .feature-title {
+    font-family: Georgia, serif;
+    font-size: 72px;
+    font-weight: bold;
+    color: #FFFFFF;
+  }
+  .caption .subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #D4B99A;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── MOCKUP ── */
+  .mockup {
+    width: 1284px;
+    background: #FAF4EA;
+  }
+
+  /* Nav bar */
+  .nav-bar {
+    width: 100%;
+    height: 110px;
+    background: #FAF4EA;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    justify-content: space-between;
+  }
+  .nav-back {
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    color: #C04B1A;
+  }
+  .nav-title {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+  .nav-new {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #6B5040;
+  }
+
+  /* Bracket header */
+  .bracket-header {
+    padding: 40px 50px 34px 50px;
+    border-bottom: 2px solid #D4B99A;
+    background: #F0E4D0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bracket-title {
+    font-family: Georgia, serif;
+    font-size: 70px;
+    font-weight: bold;
+    color: #1C1208;
+    line-height: 1;
+  }
+  .bracket-meta {
+    text-align: right;
+  }
+  .bracket-status {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #C04B1A;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .bracket-info {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    letter-spacing: 1px;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    padding: 20px 50px;
+    background: #FAF4EA;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .prog-label {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  .prog-bar-bg {
+    flex: 1;
+    height: 18px;
+    background: #D4B99A;
+  }
+  .prog-bar-fill {
+    height: 100%;
+    width: 25%;
+    background: #C04B1A;
+  }
+  .prog-count {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #C04B1A;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* Section header */
+  .section-header {
+    padding: 32px 50px 18px 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    letter-spacing: 5px;
+    color: #1C1208;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: #D4B99A;
+  }
+  .section-header .round-pill {
+    background: #1C1208;
+    color: #FAF4EA;
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    letter-spacing: 2px;
+    padding: 6px 20px;
+    white-space: nowrap;
+  }
+
+  /* Match grid */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 10px 50px 30px 50px;
+  }
+
+  /* Match card */
+  .match-card {
+    border: 2px solid #D4B99A;
+    background: #F0E4D0;
+  }
+  .match-card-header {
+    background: #1C1208;
+    padding: 14px 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    color: #D4B99A;
+    letter-spacing: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .match-card-header .match-status {
+    color: #C04B1A;
+    font-size: 22px;
+    letter-spacing: 2px;
+  }
+  .match-player {
+    padding: 24px 24px;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .match-player:last-child { border-bottom: none; }
+  .match-player.winner {
+    background: #FAF4EA;
+  }
+  .match-player.loser {
+    background: #F0E4D0;
+    opacity: 0.55;
+  }
+  .match-player.pending {
+    background: #F0E4D0;
+  }
+  .player-name-match {
+    font-family: Georgia, serif;
+    font-size: 38px;
+    font-weight: bold;
+    color: #1C1208;
+    line-height: 1;
+  }
+  .player-name-match.winner-name { color: #C04B1A; }
+  .player-name-match.loser-name {
+    text-decoration: line-through;
+    color: #6B5040;
+  }
+  .winner-check {
+    font-size: 36px;
+    color: #C04B1A;
+  }
+  .vs-divider {
+    background: #D4B99A;
+    height: 2px;
+    margin: 0;
+  }
+  .vs-label-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  .vs-label {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    color: #6B5040;
+    letter-spacing: 3px;
+  }
+
+  /* Semifinals section */
+  .semis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 10px 50px 40px 50px;
+  }
+
+  /* Finals teaser */
+  .finals-teaser {
+    margin: 0 50px 40px 50px;
+    border: 2px solid #C04B1A;
+    background: #FAF4EA;
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .finals-label {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #C04B1A;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+  .finals-title {
+    font-family: Georgia, serif;
+    font-size: 48px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+  .finals-icon {
+    font-size: 72px;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP CAPTION -->
+<div class="caption">
+  <div class="emoji">🏆</div>
+  <div class="feature-title">Tournament Mode</div>
+  <div class="subtitle">Single-elimination brackets</div>
+</div>
+
+<!-- MOCKUP -->
+<div class="mockup">
+
+  <!-- Nav -->
+  <div class="nav-bar">
+    <div class="nav-back">← TOOLS</div>
+    <div class="nav-title">Bracket Creator</div>
+    <div class="nav-new">NEW ＋</div>
+  </div>
+
+  <!-- Bracket header -->
+  <div class="bracket-header">
+    <div>
+      <div class="bracket-title">🏆 Bracket Creator</div>
+    </div>
+    <div class="bracket-meta">
+      <div class="bracket-status">IN PROGRESS</div>
+      <div class="bracket-info">8 players · Round 1 of 3</div>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-wrap">
+    <div class="prog-label">PROGRESS</div>
+    <div class="prog-bar-bg"><div class="prog-bar-fill"></div></div>
+    <div class="prog-count">2/4 MATCHES DONE</div>
+  </div>
+
+  <!-- ROUND 1 -->
+  <div class="section-header">ROUND 1 <span class="round-pill">QUARTERFINALS</span></div>
+  <div class="match-grid">
+
+    <!-- Match 1 -->
+    <div class="match-card">
+      <div class="match-card-header">
+        MATCH 1 <span class="match-status">COMPLETE ✓</span>
+      </div>
+      <div class="match-player winner">
+        <div class="player-name-match winner-name">Alice</div>
+        <div class="winner-check">✓</div>
+      </div>
+      <div class="vs-label-wrap"><div class="vs-label">VS</div></div>
+      <div class="match-player loser">
+        <div class="player-name-match loser-name">Bob</div>
+        <div style="font-family:'Courier New',monospace;font-size:26px;color:#6B5040;">✕</div>
+      </div>
+    </div>
+
+    <!-- Match 2 -->
+    <div class="match-card">
+      <div class="match-card-header">
+        MATCH 2 <span class="match-status">COMPLETE ✓</span>
+      </div>
+      <div class="match-player winner">
+        <div class="player-name-match winner-name">Charlie</div>
+        <div class="winner-check">✓</div>
+      </div>
+      <div class="vs-label-wrap"><div class="vs-label">VS</div></div>
+      <div class="match-player loser">
+        <div class="player-name-match loser-name">Diana</div>
+        <div style="font-family:'Courier New',monospace;font-size:26px;color:#6B5040;">✕</div>
+      </div>
+    </div>
+
+    <!-- Match 3 -->
+    <div class="match-card">
+      <div class="match-card-header">
+        MATCH 3 <span style="color:#D4B99A;font-size:22px;letter-spacing:2px;">PENDING</span>
+      </div>
+      <div class="match-player pending">
+        <div class="player-name-match">Eve</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;letter-spacing:1px;">TAP TO WIN</div>
+      </div>
+      <div class="vs-label-wrap"><div class="vs-label">VS</div></div>
+      <div class="match-player pending">
+        <div class="player-name-match">Frank</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;letter-spacing:1px;">TAP TO WIN</div>
+      </div>
+    </div>
+
+    <!-- Match 4 -->
+    <div class="match-card">
+      <div class="match-card-header">
+        MATCH 4 <span style="color:#D4B99A;font-size:22px;letter-spacing:2px;">PENDING</span>
+      </div>
+      <div class="match-player pending">
+        <div class="player-name-match">Grace</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;letter-spacing:1px;">TAP TO WIN</div>
+      </div>
+      <div class="vs-label-wrap"><div class="vs-label">VS</div></div>
+      <div class="match-player pending">
+        <div class="player-name-match">Henry</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;letter-spacing:1px;">TAP TO WIN</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SEMIFINALS -->
+  <div class="section-header">ROUND 2 <span class="round-pill">SEMIFINALS</span></div>
+  <div class="semis-grid">
+
+    <!-- Semi 1 -->
+    <div class="match-card">
+      <div class="match-card-header">
+        SEMI 1 <span style="color:#C04B1A;font-size:22px;letter-spacing:2px;">READY →</span>
+      </div>
+      <div class="match-player winner" style="background:#F0E4D0;">
+        <div class="player-name-match winner-name">Alice</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;">TAP TO WIN</div>
+      </div>
+      <div class="vs-label-wrap"><div class="vs-label">VS</div></div>
+      <div class="match-player winner" style="background:#F0E4D0;">
+        <div class="player-name-match winner-name">Charlie</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;">TAP TO WIN</div>
+      </div>
+    </div>
+
+    <!-- Semi 2 -->
+    <div class="match-card" style="opacity: 0.45;">
+      <div class="match-card-header" style="background:#6B5040;">
+        SEMI 2 <span style="color:#D4B99A;font-size:22px;letter-spacing:2px;">LOCKED</span>
+      </div>
+      <div class="match-player pending">
+        <div class="player-name-match" style="color:#6B5040;">TBD</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;">—</div>
+      </div>
+      <div class="vs-label-wrap"><div class="vs-label">VS</div></div>
+      <div class="match-player pending">
+        <div class="player-name-match" style="color:#6B5040;">TBD</div>
+        <div style="font-family:'Courier New',monospace;font-size:24px;color:#D4B99A;">—</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Finals teaser -->
+  <div class="finals-teaser">
+    <div>
+      <div class="finals-label">COMING UP</div>
+      <div class="finals-title">🏆 Grand Final</div>
+    </div>
+    <div class="finals-icon">🏆</div>
+  </div>
+
+</div>
+</body>
+</html>

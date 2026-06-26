@@ -1,0 +1,27 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <clipPath id="icon-shape">
+      <rect width="1024" height="1024" rx="230" ry="230"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#icon-shape)">
+
+    <!-- Cream background -->
+    <rect width="1024" height="1024" fill="#F0E4D0"/>
+
+    <!-- 6 rust pips — 2 columns × 3 rows -->
+    <!-- Left col x=340, Right col x=684  |  Top y=256, Mid y=512, Bot y=768 -->
+
+    <circle cx="340" cy="256" r="82" fill="#C04B1A"/>
+    <circle cx="684" cy="256" r="82" fill="#C04B1A"/>
+
+    <circle cx="340" cy="512" r="82" fill="#C04B1A"/>
+    <circle cx="684" cy="512" r="82" fill="#C04B1A"/>
+
+    <circle cx="340" cy="768" r="82" fill="#C04B1A"/>
+    <circle cx="684" cy="768" r="82" fill="#C04B1A"/>
+
+  </g>
+</svg>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1284">
+<title>GameMaxxing — Every Game, Explained</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1284px;
+    min-height: 2778px;
+    overflow: hidden;
+    background: #FAF4EA;
+    font-family: Georgia, 'Times New Roman', serif;
+  }
+
+  /* ── TOP CAPTION BAR ── */
+  .caption {
+    width: 1284px;
+    height: 300px;
+    background: #1C1208;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .caption .emoji { font-size: 80px; line-height: 1; }
+  .caption .feature-title {
+    font-family: Georgia, serif;
+    font-size: 72px;
+    font-weight: bold;
+    color: #FFFFFF;
+  }
+  .caption .subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #D4B99A;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── MOCKUP ── */
+  .mockup {
+    width: 1284px;
+    background: #FAF4EA;
+  }
+
+  /* Nav bar */
+  .nav-bar {
+    width: 100%;
+    height: 110px;
+    background: #FAF4EA;
+    border-bottom: 2px solid #D4B99A;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    gap: 30px;
+    justify-content: space-between;
+  }
+  .nav-back {
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    color: #C04B1A;
+    letter-spacing: 1px;
+  }
+  .nav-title {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+  .nav-share {
+    font-family: 'Courier New', monospace;
+    font-size: 32px;
+    color: #6B5040;
+  }
+
+  /* Game header */
+  .game-header {
+    padding: 50px 50px 40px 50px;
+    border-bottom: 2px solid #D4B99A;
+    background: #F0E4D0;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .game-title {
+    font-family: Georgia, serif;
+    font-size: 80px;
+    font-weight: bold;
+    color: #1C1208;
+    line-height: 1;
+  }
+  .game-emoji-large {
+    font-size: 88px;
+    line-height: 1;
+  }
+  .badge {
+    background: #C04B1A;
+    color: #FFFFFF;
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    letter-spacing: 3px;
+    padding: 10px 24px;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+  .info-chips {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    border: 2px solid #D4B99A;
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    color: #1C1208;
+    padding: 12px 28px;
+    letter-spacing: 1px;
+  }
+  .chip.highlight {
+    background: #1C1208;
+    color: #FAF4EA;
+    border-color: #1C1208;
+  }
+
+  /* Section headers */
+  .section-header {
+    padding: 40px 50px 20px 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    color: #1C1208;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: #D4B99A;
+  }
+
+  /* Steps list */
+  .steps-list {
+    padding: 0 50px 10px 50px;
+  }
+  .step-row {
+    display: flex;
+    gap: 36px;
+    padding: 32px 0;
+    border-bottom: 2px solid #D4B99A;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 64px;
+    height: 64px;
+    background: #1C1208;
+    color: #FAF4EA;
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .step-text {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    color: #1C1208;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .step-note {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  /* Variation callout */
+  .variation-box {
+    margin: 30px 50px;
+    border: 2px solid #C04B1A;
+    padding: 30px 36px;
+    background: #FAF4EA;
+  }
+  .variation-title {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #C04B1A;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+  }
+  .variation-text {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    color: #1C1208;
+    line-height: 1.5;
+  }
+
+  /* Tools CTA */
+  .tools-cta {
+    margin: 30px 50px 40px 50px;
+    border: 2px solid #D4B99A;
+    padding: 36px 40px;
+    background: #F0E4D0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tools-cta-left {}
+  .tools-label {
+    font-family: 'Courier New', monospace;
+    font-size: 26px;
+    color: #6B5040;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+  .tools-title {
+    font-family: Georgia, serif;
+    font-size: 40px;
+    font-weight: bold;
+    color: #1C1208;
+  }
+  .tools-btn {
+    background: #C04B1A;
+    color: #FAF4EA;
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    letter-spacing: 2px;
+    padding: 18px 36px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP CAPTION -->
+<div class="caption">
+  <div class="emoji">📖</div>
+  <div class="feature-title">Every Game, Explained</div>
+  <div class="subtitle">Rules at your fingertips</div>
+</div>
+
+<!-- MOCKUP -->
+<div class="mockup">
+
+  <!-- Nav -->
+  <div class="nav-bar">
+    <div class="nav-back">← CARD GAMES</div>
+    <div class="nav-title">Game Detail</div>
+    <div class="nav-share">SHARE ↑</div>
+  </div>
+
+  <!-- Game header -->
+  <div class="game-header">
+    <div class="header-top">
+      <div>
+        <div class="game-title">Kings Cup</div>
+      </div>
+      <div class="game-emoji-large">🍺</div>
+    </div>
+    <div class="badge">DRINKING</div>
+    <div class="info-chips">
+      <div class="chip highlight">4–10 players</div>
+      <div class="chip">30–60 min</div>
+      <div class="chip">Easy</div>
+      <div class="chip">Deck of cards</div>
+    </div>
+  </div>
+
+  <!-- How to Play -->
+  <div class="section-header">HOW TO PLAY</div>
+  <div class="steps-list">
+
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-text">Place an empty cup in the center of the table. Spread a full deck of cards face-down in a circle around the cup.</div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-text">Players take turns drawing a card from the outer ring, being careful not to break the circle of cards.</div>
+        <div class="step-note">Breaking the circle = drink 3 sips as penalty</div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-text">Each card rank has a fixed rule. Ace = Waterfall, 2 = You, 3 = Me, 4 = Floor, 5 = Guys, 6 = Chicks, 7 = Heaven, 8 = Mate, 9 = Rhyme, 10 = Categories.</div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-text">Jack = Rule (make a new game rule). Queen = Questions (ask questions; first to answer drinks). The player who draws a King pours into the center cup and drinks it when the 4th King is drawn.</div>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-text">The unlucky player who draws the final (4th) King must drink the entire center cup — whatever mixture is inside from all previous pours.</div>
+        <div class="step-note">The game ends after the 4th King is drawn</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Variation callout -->
+  <div class="variation-box">
+    <div class="variation-title">PRO VARIATION</div>
+    <div class="variation-text">Try "Custom Rules" — each player writes their own rule for one card value before the game starts. Reveal rules only when that card is drawn for chaotic results.</div>
+  </div>
+
+  <!-- Section: Tools -->
+  <div class="section-header">TOOLS</div>
+  <div class="tools-cta">
+    <div class="tools-cta-left">
+      <div class="tools-label">USEFUL FOR THIS GAME</div>
+      <div class="tools-title">🛠 Open Tools Hub</div>
+    </div>
+    <div class="tools-btn">OPEN TOOLS →</div>
+  </div>
+
+</div>
+</body>
+</html>
